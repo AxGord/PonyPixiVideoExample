@@ -1,0 +1,1 @@
+pony build %1

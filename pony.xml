@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="VideoPixiTest">
+	<config>
+		<width>1280</width>
+		<height>920</height>
+	</config>
+	<server>
+		<path>bin/</path>
+		<port>2000</port>
+		<haxe>6001</haxe>
+	</server>
+	<download path="jslib/">
+		<unit url="https://raw.githubusercontent.com/stacktracejs/stacktrace.js/v{v}/dist/stacktrace.min.js" v="1.3.0"/>
+		<unit url="https://pixijs.download/v{v}/pixi.min.js" v="4.5.3" check="pixi.js - v{v}"/>
+	</download>
+	<haxelib>
+		<lib>pony 0.5.8</lib>
+		<lib>pixijs 4.5.5</lib>
+	</haxelib>
+	<build hxml="true">
+		<main>Main</main>
+		<js>bin/app.js</js>
+		<cp>src</cp>
+		<dce>full</dce>
+		<d>analyzer-optimize</d>
+	</build>
+	<uglify libcache="true">
+		<release>
+			<c/>
+			<m/>
+		</release>
+		<debug>
+			<input>jslib/stacktrace.min.js</input>
+			<sourcemap>
+				<input>bin/app.js.map</input>
+				<output>bin/app.js.map</output>
+				<url>app.js.map</url>
+				<source>app.js</source>
+			</sourcemap>
+		</debug>
+		<input>jslib/pixi.min.js</input>
+		<input>bin/app.js</input>
+		<output>bin/app.js</output>
+	</uglify>
+</project>

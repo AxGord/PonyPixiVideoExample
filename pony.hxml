@@ -1,0 +1,8 @@
+-main Main
+-js bin/app.js
+-cp src
+-dce full
+-D analyzer-optimize
+-lib pony:0.5.8
+-lib pixijs:4.5.5
+-debug 
