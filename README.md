@@ -1,1 +1,1 @@
-PixiVideoTest
+Pony Pixi Video Example

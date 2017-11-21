@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project version="2">
+	<output>
+		<movie outputType="CustomBuild"/>
+		<movie path="null"/>
+		<movie height="0"/>
+		<movie background="#FFFFFF"/>
+		<movie fps="0"/>
+		<movie width="0"/>
+		<movie version="0"/>
+		<movie minorVersion="0"/>
+		<movie platform="Custom"/>
+		<movie input=""/>
+	</output>
+	<classpaths>
+		<!--example: <class path="..." />-->
+	</classpaths>
+	<build>
+		<option noInlineOnDebug="False"/>
+		<option directives=""/>
+		<option additional="pony.hxml"/>
+		<option flashStrict="False"/>
+		<option mainClass=""/>
+		<option enabledebug="False"/>
+	</build>
+	<haxelib>
+		<library name="pixijs:4.5.5"/>
+		<!--example: <library name="..." />-->
+	</haxelib>
+	<compileTargets>
+		<compile path="src/Main.hx"/>
+	</compileTargets>
+	<hiddenPaths>
+		<hidden path="obj"/>
+	</hiddenPaths>
+	<preBuildCommand>build.cmd $(BuildConfig)</preBuildCommand>
+	<postBuildCommand alwaysRun="False"/>
+	<options>
+		<option showHiddenPaths="True"/>
+		<option testMovie="Webserver"/>
+		<option testMovieCommand=""/>
+	</options>
+	<storage/>
+</project>

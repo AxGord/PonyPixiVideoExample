@@ -1,0 +1,17 @@
+{
+"version": "2.0.0",
+"tasks": [
+{
+"type": "shell",
+"taskName": "pony build debug",
+"command": "pony build debug",
+"group": {
+"kind": "build",
+"isDefault": true
+},
+"problemMatcher": [
+"$haxe"
+]
+}
+]
+}
