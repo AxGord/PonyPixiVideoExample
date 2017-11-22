@@ -1,11 +1,16 @@
 using pony.pixi.PixiExtends;
 
+import pony.Config;
+
 class Main extends pony.pixi.App {
 
 	public static var mainDiv:js.html.DivElement;
 
 	function new() {
-		var scene = new Scene();
+		//var scene = new Scene();
+
+		var scene = new UI();
+
 		super(scene, Config.width, Config.height, 0x666666, mainDiv);
 		scene.init();
 	}

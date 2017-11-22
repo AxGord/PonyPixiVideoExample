@@ -1,1 +1,0 @@
-class Config implements pony.magic.PonyConfig {}
