@@ -896,15 +896,30 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 			var s59 = attrs.creep;
 			obj = new pony_pixi_ui_TimeBar(attrs8,attrs9,attrs10,attrs11,obj18,this25,obj19,obj20,obj21,obj22,s59 == null ? 0 : Std.parseInt(s59) * this.SCALE | 0);
 			break;
+		case "video":
+			var s60 = attrs.x;
+			var video = s60 == null ? 0 : parseFloat(s60) * this.SCALE;
+			var s61 = attrs.y;
+			var video1 = s61 == null ? 0 : parseFloat(s61) * this.SCALE;
+			var s62 = attrs.w;
+			var video2 = s62 == null ? 0 : parseFloat(s62) * this.SCALE;
+			var s63 = attrs.h;
+			var video3 = new pony_pixi_ui_HtmlVideoUI({ x : video, y : video1, width : video2, height : s63 == null ? 0 : parseFloat(s63) * this.SCALE},pony_pixi_App.main);
+			var src = attrs.src;
+			if(src != null) {
+				video3.video.loadVideo(src);
+			}
+			obj = video3;
+			break;
 		case "zeroplace":
-			var s60 = new pony_pixi_ui_ZeroPlace();
+			var s64 = new pony_pixi_ui_ZeroPlace();
 			var _g16 = 0;
 			while(_g16 < content.length) {
 				var e7 = content[_g16];
 				++_g16;
-				s60.add(e7);
+				s64.add(e7);
 			}
-			obj = s60;
+			obj = s64;
 			break;
 		default:
 			obj = this.customUIElement(name,attrs,content);
@@ -919,8 +934,8 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 				obj.pivot.set(parseFloat(a2[0]) * w,parseFloat(a2[1]) * h);
 			}
 		}
-		var s61 = attrs.notouch;
-		if(s61 != null && StringTools.trim(s61.toLowerCase()) == "true") {
+		var s65 = attrs.notouch;
+		if(s65 != null && StringTools.trim(s65.toLowerCase()) == "true") {
 			obj.interactive = false;
 			obj.interactiveChildren = false;
 			obj.hitArea = new PIXI.Rectangle(0,0,0,0);
@@ -950,28 +965,28 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 						var obj23 = [obj];
 						var _this5 = this.FILTERS;
 						var g2 = __map_reserved[f] != null ? _this5.getReserved(f) : _this5.h[f];
-						var s62 = [g2.outerStrength + 2];
+						var s66 = [g2.outerStrength + 2];
 						var f1 = null;
 						if(js_Boot.__instanceof(obj23[0],pony_geom_IWH)) {
-							f1 = (function(s63,obj24) {
+							f1 = (function(s67,obj24) {
 								return function() {
 									var p2 = obj24[0].toGlobal(new PIXI.Point());
-									obj24[0].filterArea = new PIXI.Rectangle(p2.x - s63[0],p2.y - s63[0],obj24[0].width + s63[0] * 2,obj24[0].height + s63[0] * 2);
+									obj24[0].filterArea = new PIXI.Rectangle(p2.x - s67[0],p2.y - s67[0],obj24[0].width + s67[0] * 2,obj24[0].height + s67[0] * 2);
 									var size = (js_Boot.__cast(obj24[0] , pony_geom_IWH)).get_size();
-									obj24[0].filterArea.width = size.x + s63[0] * 2;
-									obj24[0].filterArea.height = size.y + s63[0] * 2;
+									obj24[0].filterArea.width = size.x + s67[0] * 2;
+									obj24[0].filterArea.height = size.y + s67[0] * 2;
 								};
-							})(s62,obj23);
+							})(s66,obj23);
 						} else {
-							f1 = (function(s64,obj25) {
+							f1 = (function(s68,obj25) {
 								return function() {
 									var p3 = obj25[0].toGlobal(new PIXI.Point());
-									obj25[0].filterArea = new PIXI.Rectangle(p3.x - s64[0],p3.y - s64[0],obj25[0].width + s64[0] * 2,obj25[0].height + s64[0] * 2);
+									obj25[0].filterArea = new PIXI.Rectangle(p3.x - s68[0],p3.y - s68[0],obj25[0].width + s68[0] * 2,obj25[0].height + s68[0] * 2);
 								};
-							})(s62,obj23);
+							})(s66,obj23);
 						}
-						var s65 = attrs.dyn;
-						if(s65 != null && StringTools.trim(s65.toLowerCase()) == "true") {
+						var s69 = attrs.dyn;
+						if(s69 != null && StringTools.trim(s69.toLowerCase()) == "true") {
 							var this26;
 							if(pony_time_DeltaTime.eFixedUpdate == null) {
 								var this110 = new pony_Priority(null,false);
@@ -993,29 +1008,29 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 			}
 		}
 		if(attrs.x != null) {
-			var s66 = attrs.x;
-			obj.x = s66 == null ? 0 : parseFloat(s66) * this.SCALE;
+			var s70 = attrs.x;
+			obj.x = s70 == null ? 0 : parseFloat(s70) * this.SCALE;
 		}
 		if(attrs.y != null) {
-			var s67 = attrs.y;
-			obj.y = s67 == null ? 0 : parseFloat(s67) * this.SCALE;
+			var s71 = attrs.y;
+			obj.y = s71 == null ? 0 : parseFloat(s71) * this.SCALE;
 		}
-		var s68 = attrs.flipx;
-		if(s68 != null && StringTools.trim(s68.toLowerCase()) == "true") {
+		var s72 = attrs.flipx;
+		if(s72 != null && StringTools.trim(s72.toLowerCase()) == "true") {
 			var o3 = obj;
 			o3.scale.x = -o3.scale.x;
 			var o4 = obj;
 			o4.x += o4.width;
 		}
-		var s69 = attrs.flipy;
-		if(s69 != null && StringTools.trim(s69.toLowerCase()) == "true") {
+		var s73 = attrs.flipy;
+		if(s73 != null && StringTools.trim(s73.toLowerCase()) == "true") {
 			var o5 = obj;
 			o5.scale.y = -o5.scale.y;
 			var o6 = obj;
 			o6.y += o6.height;
 		}
-		var s70 = attrs.visible;
-		if(s70 != null && StringTools.trim(s70.toLowerCase()) != "true") {
+		var s74 = attrs.visible;
+		if(s74 != null && StringTools.trim(s74.toLowerCase()) != "true") {
 			obj.visible = false;
 		}
 		return obj;
@@ -1084,8 +1099,8 @@ UI.prototype = $extend(pony_ui_xml_PixiXmlUi.prototype,{
 	}
 	,_createUI: function() {
 		this.createFilters({ });
-		var tmp = this.createUIElement("rect",{ h : "300", w : "300", round : "15", color : "#0", y : "200", x : "200"},[]);
-		var tmp1 = this.createUIElement("video",{ h : "280", w : "280", y : "210", x : "210"},[]);
+		var tmp = this.createUIElement("rect",{ h : "300", w : "300", round : "15", color : "#333033", y : "200", x : "200"},[]);
+		var tmp1 = this.createUIElement("video",{ h : "280", src : "https://github.com/mediaelement/mediaelement-files/blob/master/big_buck_bunny.mp4?raw=true", w : "280", y : "210", x : "210"},[]);
 		return this.createUIElement("free",{ },[tmp,tmp1]);
 	}
 	,__class__: UI
@@ -1198,6 +1213,9 @@ haxe_ds_StringMap.prototype = {
 			}
 		}
 		return out;
+	}
+	,iterator: function() {
+		return new haxe_ds__$StringMap_StringMapIterator(this,this.arrayKeys());
 	}
 	,__class__: haxe_ds_StringMap
 };
@@ -1423,6 +1441,203 @@ js_Boot.__isNativeObj = function(o) {
 };
 js_Boot.__resolveNativeClass = function(name) {
 	return $global[name];
+};
+var pony_HtmlVideo = function(options) {
+	var this1 = new pony_Priority(null,false);
+	this1.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+	this.eEnd = this1;
+	var this11 = new pony_Priority(null,false);
+	this11.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+	this.eHide = this11;
+	var this12 = new pony_Priority(null,false);
+	this12.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+	this.eShow = this12;
+	var this13 = new pony_Priority(null,false);
+	this13.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+	this.eClick = this13;
+	this.startPercent = 0;
+	this.retryCount = 0;
+	this.videoLoadPercentage = 0;
+	this.options = { bufferingTreshhold : 0.5, retryDelay : 3000, maxRetries : 4, playDelay : 500};
+	if(options != null) {
+		if(options.bufferingTreshhold != null) {
+			this.options.bufferingTreshhold = options.bufferingTreshhold;
+		}
+		if(options.retryDelay != null) {
+			this.options.retryDelay = options.retryDelay;
+		}
+		if(options.maxRetries != null) {
+			this.options.maxRetries = options.maxRetries;
+		}
+	}
+	this.videoElement = window.document.createElement("video");
+	this.videoElement.setAttribute("playsinline","playsinline");
+	this.videoElement.muted = true;
+	this.videoElement.autoplay = true;
+	this.videoElement.controls = false;
+	this.videoElement.addEventListener("loadeddata",$bind(this,this.videoLoaddataHandler));
+	this.videoElement.addEventListener("canplay",$bind(this,this.videoCanplayHandler));
+	this.videoElement.addEventListener("click",$bind(this,this.videoClickHandler));
+	this.videoElement.addEventListener("ended",$bind(this,this.videoEndHandler));
+	this.videoElement.addEventListener("pause",$bind(this,this.videoPauseHandler));
+	this.videoElement.addEventListener("progress",$bind(this,this.videoProgessHandler));
+	this.set_elementVisible(false);
+};
+pony_HtmlVideo.__name__ = true;
+pony_HtmlVideo.__interfaces__ = [pony_magic_HasSignal];
+pony_HtmlVideo.prototype = {
+	set_elementVisible: function(v) {
+		if(v) {
+			this.videoElement.style.display = "block";
+			pony_events__$Event0_Event0_$Impl_$.dispatch(this.eShow);
+		} else {
+			this.videoElement.style.display = "none";
+			pony_events__$Event0_Event0_$Impl_$.dispatch(this.eHide);
+		}
+		return v;
+	}
+	,loadVideo: function(url,startPercent) {
+		if(startPercent == null) {
+			startPercent = 0;
+		}
+		this.set_elementVisible(false);
+		this.startPercent = startPercent;
+		if(this.videoSource != null) {
+			this.videoSource.removeEventListener("error",$bind(this,this.videoSourceErrorHandler));
+			this.videoElement.removeChild(this.videoSource);
+		}
+		this.videoSource = window.document.createElement("source");
+		this.videoSource.addEventListener("error",$bind(this,this.videoSourceErrorHandler));
+		this.videoSource.src = url;
+		this.videoElement.appendChild(this.videoSource);
+		this.updateVideoLoadPercentage();
+		var f = { once : false, listener : pony_events_Listener1Type.LFunction0($bind(this,this.playVideo))};
+		var this1 = { min : 0, max : this.options.playDelay};
+		var t;
+		if(pony_time_DeltaTime.eFixedUpdate == null) {
+			var this2 = new pony_Priority(null,false);
+			this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			t = pony_time_DeltaTime.eFixedUpdate = this2;
+		} else {
+			t = pony_time_DeltaTime.eFixedUpdate;
+		}
+		var t1 = new pony_time_DTimer(t,this1,0);
+		f.once = true;
+		t1.eComplete.add(f,0);
+		var e = { once : false, listener : pony_events_Listener1Type.LFunction0($bind(t1,t1.destroy))};
+		e.once = true;
+		t1.eComplete.add(e,0);
+		t1.updateSignal.add({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(t1,t1._update))});
+		if(null != null) {
+			t1._update(null);
+		}
+	}
+	,videoSourceErrorHandler: function(e) {
+		var f = { once : false, listener : pony_events_Listener1Type.LFunction0($bind(this,this.retryConnect))};
+		var this1 = { min : 0, max : this.options.retryDelay};
+		var t;
+		if(pony_time_DeltaTime.eFixedUpdate == null) {
+			var this2 = new pony_Priority(null,false);
+			this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			t = pony_time_DeltaTime.eFixedUpdate = this2;
+		} else {
+			t = pony_time_DeltaTime.eFixedUpdate;
+		}
+		var t1 = new pony_time_DTimer(t,this1,0);
+		f.once = true;
+		t1.eComplete.add(f,0);
+		var e1 = { once : false, listener : pony_events_Listener1Type.LFunction0($bind(t1,t1.destroy))};
+		e1.once = true;
+		t1.eComplete.add(e1,0);
+		t1.updateSignal.add({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(t1,t1._update))});
+		if(null != null) {
+			t1._update(null);
+		}
+	}
+	,retryConnect: function() {
+		if(this.retryCount < this.options.maxRetries) {
+			this.loadVideo(this.videoSource.src,this.startPercent);
+			this.retryCount++;
+		}
+	}
+	,videoLoaddataHandler: function() {
+		this.updateVideoLoadPercentage();
+		if(this.videoLoadPercentage >= this.options.bufferingTreshhold) {
+			this.videoLoaded();
+		}
+	}
+	,videoCanplayHandler: function() {
+		this.updateVideoLoadPercentage();
+		if(this.videoLoadPercentage >= this.options.bufferingTreshhold && this.videoElement.style.display == "block") {
+			this.playVideo();
+		}
+	}
+	,videoClickHandler: function() {
+		pony_events__$Event0_Event0_$Impl_$.dispatch(this.eClick);
+	}
+	,videoEndHandler: function() {
+		this.hideVideo();
+		pony_events__$Event0_Event0_$Impl_$.dispatch(this.eEnd);
+	}
+	,videoPauseHandler: function() {
+		if(this.videoElement.style.display == "block") {
+			this.playVideo();
+		}
+	}
+	,videoProgessHandler: function() {
+		this.updateVideoLoadPercentage();
+		if(this.videoLoadPercentage >= this.options.bufferingTreshhold) {
+			this.showVideo();
+			this.videoCanplayHandler();
+		}
+	}
+	,updateVideoLoadPercentage: function() {
+		if(this.videoElement.buffered.length > 0) {
+			this.videoLoadPercentage = this.videoElement.buffered.end(0) / this.videoElement.duration;
+		}
+	}
+	,videoLoaded: function() {
+		this.retryCount = 0;
+		this.videoElement.currentTime = this.videoElement.duration * this.startPercent;
+		this.updateVideoLoadPercentage();
+		this.playVideo();
+		this.showVideo();
+	}
+	,showVideo: function() {
+		this.updateVideoLoadPercentage();
+		if(this.videoLoadPercentage >= this.options.bufferingTreshhold) {
+			this.set_elementVisible(true);
+		}
+	}
+	,hideVideo: function() {
+		var f = { once : false, listener : pony_events_Listener1Type.LFunction0(($_=this.videoElement,$bind($_,$_.pause)))};
+		var this1 = { min : 0, max : this.options.playDelay};
+		var t;
+		if(pony_time_DeltaTime.eFixedUpdate == null) {
+			var this2 = new pony_Priority(null,false);
+			this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			t = pony_time_DeltaTime.eFixedUpdate = this2;
+		} else {
+			t = pony_time_DeltaTime.eFixedUpdate;
+		}
+		var t1 = new pony_time_DTimer(t,this1,0);
+		f.once = true;
+		t1.eComplete.add(f,0);
+		var e = { once : false, listener : pony_events_Listener1Type.LFunction0($bind(t1,t1.destroy))};
+		e.once = true;
+		t1.eComplete.add(e,0);
+		t1.updateSignal.add({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(t1,t1._update))});
+		if(null != null) {
+			t1._update(null);
+		}
+		this.set_elementVisible(false);
+	}
+	,playVideo: function() {
+		if(this.videoLoadPercentage >= this.options.bufferingTreshhold) {
+			this.videoElement.play();
+		}
+	}
+	,__class__: pony_HtmlVideo
 };
 var pony_IPool = function() { };
 pony_IPool.__name__ = true;
@@ -2811,8 +3026,8 @@ pony_geom_GeomTools.center = function(container,objects,vert,border,padding,alig
 	var _g31 = a.length;
 	while(_g41 < _g31) {
 		var i = _g41++;
-		var this11 = { x : a[i] + border.left, y : b[i] + border.top};
-		_g22.push(this11);
+		var this2 = { x : a[i] + border.left, y : b[i] + border.top};
+		_g22.push(this2);
 	}
 	return _g22;
 };
@@ -3029,27 +3244,27 @@ var pony_pixi_FastMovieClip = function(data,frameTime,fixedTime,crop) {
 	this.data = _g2;
 	var tmp;
 	if(fixedTime) {
-		var this11 = { min : 0, max : frameTime};
+		var this2 = { min : 0, max : frameTime};
 		var tmp1;
 		if(pony_time_DeltaTime.eFixedUpdate == null) {
-			var this12 = new pony_Priority(null,false);
-			this12.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-			tmp1 = pony_time_DeltaTime.eFixedUpdate = this12;
+			var this3 = new pony_Priority(null,false);
+			this3.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			tmp1 = pony_time_DeltaTime.eFixedUpdate = this3;
 		} else {
 			tmp1 = pony_time_DeltaTime.eFixedUpdate;
 		}
-		tmp = new pony_time_DTimer(tmp1,this11,-1);
+		tmp = new pony_time_DTimer(tmp1,this2,-1);
 	} else {
-		var this13 = { min : 0, max : frameTime};
+		var this4 = { min : 0, max : frameTime};
 		var tmp2;
 		if(pony_time_DeltaTime.eUpdate == null) {
-			var this14 = new pony_Priority(null,false);
-			this14.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-			tmp2 = pony_time_DeltaTime.eUpdate = this14;
+			var this5 = new pony_Priority(null,false);
+			this5.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			tmp2 = pony_time_DeltaTime.eUpdate = this5;
 		} else {
 			tmp2 = pony_time_DeltaTime.eUpdate;
 		}
-		tmp = new pony_time_DTimer(tmp2,this13,-1);
+		tmp = new pony_time_DTimer(tmp2,this4,-1);
 	}
 	this.timer = tmp;
 	this.timer.eComplete.add({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(this,this.tick))});
@@ -3140,9 +3355,9 @@ pony_pixi_FastMovieClip.prototype = {
 			this.timer.reset();
 			var this1;
 			if(pony_time_DeltaTime.eFixedUpdate == null) {
-				var this11 = new pony_Priority(null,false);
-				this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-				this1 = pony_time_DeltaTime.eFixedUpdate = this11;
+				var this2 = new pony_Priority(null,false);
+				this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+				this1 = pony_time_DeltaTime.eFixedUpdate = this2;
 			} else {
 				this1 = pony_time_DeltaTime.eFixedUpdate;
 			}
@@ -3156,6 +3371,52 @@ pony_pixi_FastMovieClip.prototype = {
 	,onFrameUpdate: function(frame,dt) {
 	}
 	,__class__: pony_pixi_FastMovieClip
+};
+var pony_pixi_HtmlContainerBase = function(targetRect,app,targetStyle) {
+	this.set_targetRect(targetRect);
+	if(app == null) {
+		app = pony_pixi_App.main;
+	}
+	this.app = app;
+	this.set_targetStyle(targetStyle);
+};
+pony_pixi_HtmlContainerBase.__name__ = true;
+pony_pixi_HtmlContainerBase.prototype = {
+	resizeHandler: function(scale) {
+		var rect = this.app.parentDom.getBoundingClientRect();
+		var nx = rect.x + window.scrollX + scale * (this.targetRect.x + this.app.container.x / this.app.container.width);
+		var ny = rect.y + window.scrollY + scale * (this.targetRect.y + this.app.container.y / this.app.container.height);
+		var bw = scale * this.targetRect.width;
+		var bh = scale * this.targetRect.height;
+		this.resize(nx,ny,bw,bh);
+	}
+	,resize: function(x,y,w,h) {
+		this.targetStyle.top = y + "px";
+		this.targetStyle.left = x + "px";
+		this.targetStyle.width = w + "px";
+		this.targetStyle.height = h + "px";
+	}
+	,set_targetStyle: function(s) {
+		this.targetStyle = s;
+		if(s == null) {
+			this.app.eResize.remove({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(this,this.resizeHandler))});
+		} else {
+			s.position = "absolute";
+			this.app.eResize.add({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(this,this.resizeHandler))});
+			this.resizeHandler(this.app.scale);
+		}
+		return this.targetStyle;
+	}
+	,set_targetRect: function(v) {
+		if(this.targetRect == null || v.x != this.targetRect.x || v.y != this.targetRect.y || v.width != this.targetRect.width || v.height != this.targetRect.height) {
+			this.targetRect = v;
+			if(this.targetStyle != null) {
+				this.resizeHandler(this.app.scale);
+			}
+		}
+		return v;
+	}
+	,__class__: pony_pixi_HtmlContainerBase
 };
 var pony_pixi_PixiAssets = function() { };
 pony_pixi_PixiAssets.__name__ = true;
@@ -3263,8 +3524,8 @@ pony_pixi_ui_BaseLayout.prototype = $extend(PIXI.Sprite.prototype,{
 			var this1 = { x : o.textWidth, y : o.textHeight};
 			return this1;
 		} else {
-			var this11 = { x : o.width * o.scale.x, y : o.height * o.scale.y};
-			return this11;
+			var this2 = { x : o.width * o.scale.x, y : o.height * o.scale.y};
+			return this2;
 		}
 	}
 	,get_size: function() {
@@ -3345,9 +3606,9 @@ var pony_pixi_ui_Bar = function(bg,fillBegin,fill,offset,invert,useSpriteSheet,c
 	if(useSpriteSheet) {
 		var this11;
 		if(pony_time_DeltaTime.eFixedUpdate == null) {
-			var this111 = new pony_Priority(null,false);
-			this111.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-			this11 = pony_time_DeltaTime.eFixedUpdate = this111;
+			var this2 = new pony_Priority(null,false);
+			this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			this11 = pony_time_DeltaTime.eFixedUpdate = this2;
 		} else {
 			this11 = pony_time_DeltaTime.eFixedUpdate;
 		}
@@ -3426,9 +3687,9 @@ pony_pixi_ui_Bar.prototype = $extend(PIXI.Sprite.prototype,{
 		}
 		this.core.endInit();
 		pony_events__$Event1_Event1_$Impl_$.dispatch(this.eReady,size);
-		var this11 = this.eReady;
-		if(this11 != null) {
-			this11.destroy();
+		var this2 = this.eReady;
+		if(this2 != null) {
+			this2.destroy();
 		}
 	}
 	,changeXHandler: function(p) {
@@ -3903,6 +4164,43 @@ pony_pixi_ui_FSButtonCore.prototype = {
 	}
 	,__class__: pony_pixi_ui_FSButtonCore
 };
+var pony_pixi_ui_HtmlContainer = function(targetRect,app) {
+	PIXI.Sprite.call(this);
+	this.targetRect = targetRect;
+	var g = new PIXI.Graphics();
+	g.beginFill(0);
+	g.drawRect(0,0,targetRect.width,targetRect.height);
+	this.addChild(g);
+	this.htmlContainer = new pony_pixi_HtmlContainerBase(targetRect,app);
+	var this1;
+	if(pony_time_DeltaTime.eFixedUpdate == null) {
+		var this11 = new pony_Priority(null,false);
+		this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+		this1 = pony_time_DeltaTime.eFixedUpdate = this11;
+	} else {
+		this1 = pony_time_DeltaTime.eFixedUpdate;
+	}
+	this1.add({ once : false, listener : pony_events_Listener1Type.LFunction0($bind(this,this.rectUpdate))});
+};
+pony_pixi_ui_HtmlContainer.__name__ = true;
+pony_pixi_ui_HtmlContainer.__super__ = PIXI.Sprite;
+pony_pixi_ui_HtmlContainer.prototype = $extend(PIXI.Sprite.prototype,{
+	rectUpdate: function() {
+		this.targetRect = { x : this.x, y : this.y, width : this.width, height : this.height};
+	}
+	,__class__: pony_pixi_ui_HtmlContainer
+});
+var pony_pixi_ui_HtmlVideoUI = function(targetRect,app,options) {
+	pony_pixi_ui_HtmlContainer.call(this,targetRect,app);
+	this.video = new pony_HtmlVideo(options);
+	app.parentDom.appendChild(this.video.videoElement);
+	this.htmlContainer.set_targetStyle(this.video.videoElement.style);
+};
+pony_pixi_ui_HtmlVideoUI.__name__ = true;
+pony_pixi_ui_HtmlVideoUI.__super__ = pony_pixi_ui_HtmlContainer;
+pony_pixi_ui_HtmlVideoUI.prototype = $extend(pony_pixi_ui_HtmlContainer.prototype,{
+	__class__: pony_pixi_ui_HtmlVideoUI
+});
 var pony_pixi_ui_IntervalLayout = function(interval,vert,border,align) {
 	if(vert == null) {
 		vert = false;
@@ -4004,8 +4302,8 @@ var pony_pixi_ui_LabelButton = function(imgs,vert,border,offset,useSpriteSheet) 
 		}
 		var _this2 = _gthis.layout;
 		var _this3 = _gthis.button;
-		var this11 = { x : _this3.zone.sliceWidth, y : _this3.zone.sliceHeight};
-		var v1 = this11.y;
+		var this2 = { x : _this3.zone.sliceWidth, y : _this3.zone.sliceHeight};
+		var v1 = this2.y;
 		if(_this2.height != v1) {
 			_this2.height = v1;
 			_this2.update();
@@ -4343,26 +4641,26 @@ pony_pixi_ui_TextSizedBox.prototype = $extend(pony_pixi_ui_BaseLayout.prototype,
 				this.layout.update();
 				var this1;
 				if(pony_time_DeltaTime.eFixedUpdate == null) {
-					var this11 = new pony_Priority(null,false);
-					this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-					this1 = pony_time_DeltaTime.eFixedUpdate = this11;
+					var this2 = new pony_Priority(null,false);
+					this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+					this1 = pony_time_DeltaTime.eFixedUpdate = this2;
 				} else {
 					this1 = pony_time_DeltaTime.eFixedUpdate;
 				}
 				var listener = { once : false, listener : pony_events_Listener1Type.LFunction0(($_=this.layout,$bind($_,$_.update)))};
 				listener.once = true;
 				this1.add(listener,0);
-				var this2;
+				var this3;
 				if(pony_time_DeltaTime.eFixedUpdate == null) {
-					var this12 = new pony_Priority(null,false);
-					this12.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-					this2 = pony_time_DeltaTime.eFixedUpdate = this12;
+					var this4 = new pony_Priority(null,false);
+					this4.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+					this3 = pony_time_DeltaTime.eFixedUpdate = this4;
 				} else {
-					this2 = pony_time_DeltaTime.eFixedUpdate;
+					this3 = pony_time_DeltaTime.eFixedUpdate;
 				}
 				var listener1 = { once : false, listener : pony_events_Listener1Type.LFunction0($bind(this,this._update))};
 				listener1.once = true;
-				this2.add(listener1,0);
+				this3.add(listener1,0);
 			}
 		}
 		return v;
@@ -4370,9 +4668,9 @@ pony_pixi_ui_TextSizedBox.prototype = $extend(pony_pixi_ui_BaseLayout.prototype,
 	,_update: function() {
 		var this1;
 		if(pony_time_DeltaTime.eFixedUpdate == null) {
-			var this11 = new pony_Priority(null,false);
-			this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-			this1 = pony_time_DeltaTime.eFixedUpdate = this11;
+			var this2 = new pony_Priority(null,false);
+			this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			this1 = pony_time_DeltaTime.eFixedUpdate = this2;
 		} else {
 			this1 = pony_time_DeltaTime.eFixedUpdate;
 		}
@@ -4383,22 +4681,22 @@ pony_pixi_ui_TextSizedBox.prototype = $extend(pony_pixi_ui_BaseLayout.prototype,
 	,destroy: function(options) {
 		var this1;
 		if(pony_time_DeltaTime.eFixedUpdate == null) {
-			var this11 = new pony_Priority(null,false);
-			this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-			this1 = pony_time_DeltaTime.eFixedUpdate = this11;
+			var this2 = new pony_Priority(null,false);
+			this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			this1 = pony_time_DeltaTime.eFixedUpdate = this2;
 		} else {
 			this1 = pony_time_DeltaTime.eFixedUpdate;
 		}
 		this1.remove({ once : false, listener : pony_events_Listener1Type.LFunction0($bind(this,this._update))});
-		var this2;
+		var this3;
 		if(pony_time_DeltaTime.eFixedUpdate == null) {
-			var this12 = new pony_Priority(null,false);
-			this12.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-			this2 = pony_time_DeltaTime.eFixedUpdate = this12;
+			var this4 = new pony_Priority(null,false);
+			this4.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			this3 = pony_time_DeltaTime.eFixedUpdate = this4;
 		} else {
-			this2 = pony_time_DeltaTime.eFixedUpdate;
+			this3 = pony_time_DeltaTime.eFixedUpdate;
 		}
-		this2.remove({ once : false, listener : pony_events_Listener1Type.LFunction0(($_=this.layout,$bind($_,$_.update)))});
+		this3.remove({ once : false, listener : pony_events_Listener1Type.LFunction0(($_=this.layout,$bind($_,$_.update)))});
 		pony_pixi_ui_BaseLayout.prototype.destroy.call(this,options);
 	}
 	,__class__: pony_pixi_ui_TextSizedBox
@@ -5459,9 +5757,9 @@ var pony_time_Tween = function(range,type,time,invert,loop,pingpong,fixedTime,sk
 	if(fixedTime) {
 		var tmp2;
 		if(pony_time_DeltaTime.eFixedUpdate == null) {
-			var this111 = new pony_Priority(null,false);
-			this111.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-			tmp2 = pony_time_DeltaTime.eFixedUpdate = this111;
+			var this2 = new pony_Priority(null,false);
+			this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			tmp2 = pony_time_DeltaTime.eFixedUpdate = this2;
 		} else {
 			tmp2 = pony_time_DeltaTime.eFixedUpdate;
 		}
@@ -5469,9 +5767,9 @@ var pony_time_Tween = function(range,type,time,invert,loop,pingpong,fixedTime,sk
 	} else {
 		var tmp3;
 		if(pony_time_DeltaTime.eUpdate == null) {
-			var this121 = new pony_Priority(null,false);
-			this121.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-			tmp3 = pony_time_DeltaTime.eUpdate = this121;
+			var this3 = new pony_Priority(null,false);
+			this3.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			tmp3 = pony_time_DeltaTime.eUpdate = this3;
 		} else {
 			tmp3 = pony_time_DeltaTime.eUpdate;
 		}
@@ -5480,13 +5778,13 @@ var pony_time_Tween = function(range,type,time,invert,loop,pingpong,fixedTime,sk
 	this.updateSignal = tmp1;
 	if(pingpong) {
 		if(skipTime == null) {
-			var this2 = time / 500 | 0;
-			skipTime = this2;
+			var this4 = time / 500 | 0;
+			skipTime = this4;
 		}
 		this.eComplete.add({ once : false, listener : pony_events_Listener1Type.LFunction0($bind(this,this.invertInvert))});
 	} else if(skipTime == null) {
-		var this3 = time / 1000 | 0;
-		skipTime = this3;
+		var this5 = time / 1000 | 0;
+		skipTime = this5;
 	}
 	this.skipTime = skipTime;
 	this.eComplete.add({ once : false, listener : pony_events_Listener1Type.LFunction0($bind(this,this.endPlay))});
@@ -5559,22 +5857,22 @@ pony_time_Tween.prototype = {
 		if(this.updateSignal == null) {
 			var this1;
 			if(pony_time_DeltaTime.eFixedUpdate == null) {
-				var this11 = new pony_Priority(null,false);
-				this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-				this1 = pony_time_DeltaTime.eFixedUpdate = this11;
+				var this2 = new pony_Priority(null,false);
+				this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+				this1 = pony_time_DeltaTime.eFixedUpdate = this2;
 			} else {
 				this1 = pony_time_DeltaTime.eFixedUpdate;
 			}
 			this1.remove({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(this,this.forward))});
-			var this2;
+			var this3;
 			if(pony_time_DeltaTime.eUpdate == null) {
-				var this12 = new pony_Priority(null,false);
-				this12.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-				this2 = pony_time_DeltaTime.eUpdate = this12;
+				var this4 = new pony_Priority(null,false);
+				this4.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+				this3 = pony_time_DeltaTime.eUpdate = this4;
 			} else {
-				this2 = pony_time_DeltaTime.eUpdate;
+				this3 = pony_time_DeltaTime.eUpdate;
 			}
-			this2.remove({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(this,this.forward))});
+			this3.remove({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(this,this.forward))});
 			return;
 		}
 		if(!this.playing) {
@@ -5596,22 +5894,22 @@ pony_time_Tween.prototype = {
 		if(this.updateSignal == null) {
 			var this1;
 			if(pony_time_DeltaTime.eFixedUpdate == null) {
-				var this11 = new pony_Priority(null,false);
-				this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-				this1 = pony_time_DeltaTime.eFixedUpdate = this11;
+				var this2 = new pony_Priority(null,false);
+				this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+				this1 = pony_time_DeltaTime.eFixedUpdate = this2;
 			} else {
 				this1 = pony_time_DeltaTime.eFixedUpdate;
 			}
 			this1.remove({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(this,this.backward))});
-			var this2;
+			var this3;
 			if(pony_time_DeltaTime.eUpdate == null) {
-				var this12 = new pony_Priority(null,false);
-				this12.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-				this2 = pony_time_DeltaTime.eUpdate = this12;
+				var this4 = new pony_Priority(null,false);
+				this4.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+				this3 = pony_time_DeltaTime.eUpdate = this4;
 			} else {
-				this2 = pony_time_DeltaTime.eUpdate;
+				this3 = pony_time_DeltaTime.eUpdate;
 			}
-			this2.remove({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(this,this.backward))});
+			this3.remove({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(this,this.backward))});
 			return;
 		}
 		if(!this.playing) {
@@ -5648,19 +5946,19 @@ pony_time_Tween.prototype = {
 			this1.destroy();
 		}
 		this.eUpdate = null;
-		var this11 = this.eProgress;
-		if(this11 != null) {
-			this11.destroy();
+		var this2 = this.eProgress;
+		if(this2 != null) {
+			this2.destroy();
 		}
 		this.eProgress = null;
-		var this12 = this.eComplete;
-		if(this12 != null) {
-			this12.destroy();
+		var this3 = this.eComplete;
+		if(this3 != null) {
+			this3.destroy();
 		}
 		this.eComplete = null;
-		var this13 = this.eSkip;
-		if(this13 != null) {
-			this13.destroy();
+		var this4 = this.eSkip;
+		if(this4 != null) {
+			this4.destroy();
 		}
 		this.eSkip = null;
 	}
@@ -5676,8 +5974,8 @@ var pony_ui_gui_BaseLayoutCore = function() {
 	this1.compare = pony_events__$Event0_Event0_$Impl_$.compare;
 	this.eReady = this1;
 	var this2;
-	var this11 = { a : 0, b : $bind(this,this.tasksReady)};
-	this2 = this11;
+	var this3 = { a : 0, b : $bind(this,this.tasksReady)};
+	this2 = this3;
 	this.tasks = this2;
 };
 pony_ui_gui_BaseLayoutCore.__name__ = true;
@@ -5715,9 +6013,9 @@ pony_ui_gui_BaseLayoutCore.prototype = {
 			pony__$Tasks_Tasks_$Impl_$.add(this.tasks);
 			var this1;
 			if(pony_time_DeltaTime.eFixedUpdate == null) {
-				var this11 = new pony_Priority(null,false);
-				this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-				this1 = pony_time_DeltaTime.eFixedUpdate = this11;
+				var this2 = new pony_Priority(null,false);
+				this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+				this1 = pony_time_DeltaTime.eFixedUpdate = this2;
 			} else {
 				this1 = pony_time_DeltaTime.eFixedUpdate;
 			}
@@ -5792,9 +6090,9 @@ pony_ui_gui_BaseLayoutCore.prototype = {
 		this.objects = null;
 		var this1;
 		if(pony_time_DeltaTime.eFixedUpdate == null) {
-			var this11 = new pony_Priority(null,false);
-			this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-			this1 = pony_time_DeltaTime.eFixedUpdate = this11;
+			var this2 = new pony_Priority(null,false);
+			this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			this1 = pony_time_DeltaTime.eFixedUpdate = this2;
 		} else {
 			this1 = pony_time_DeltaTime.eFixedUpdate;
 		}
@@ -6044,16 +6342,16 @@ pony_ui_gui_BarCore.prototype = {
 		}
 		this.eChangePercent = null;
 		if(this.eChangePos != null) {
-			var this11 = this.eChangePos;
-			if(this11 != null) {
-				this11.destroy();
+			var this2 = this.eChangePos;
+			if(this2 != null) {
+				this2.destroy();
 			}
 		}
 		this.eChangePos = null;
 		if(this.eChangeValue != null) {
-			var this12 = this.eChangeValue;
-			if(this12 != null) {
-				this12.destroy();
+			var this3 = this.eChangeValue;
+			if(this3 != null) {
+				this3.destroy();
 			}
 		}
 		this.eChangeValue = null;
@@ -6293,36 +6591,36 @@ pony_ui_gui_ButtonCore.prototype = $extend(pony_Tumbler.prototype,{
 			this1.destroy();
 		}
 		this.eClick = null;
-		var this11 = this.eVisual;
-		if(this11 != null) {
-			this11.destroy();
+		var this2 = this.eVisual;
+		if(this2 != null) {
+			this2.destroy();
 		}
 		this.eVisual = null;
 		if(this.eChangeLowMode != null) {
-			var this12 = this.eChangeLowMode;
-			if(this12 != null) {
-				this12.destroy();
+			var this3 = this.eChangeLowMode;
+			if(this3 != null) {
+				this3.destroy();
 			}
 		}
 		this.eChangeLowMode = null;
 		if(this.eChangeMode != null) {
-			var this13 = this.eChangeMode;
-			if(this13 != null) {
-				this13.destroy();
+			var this4 = this.eChangeMode;
+			if(this4 != null) {
+				this4.destroy();
 			}
 		}
 		this.eChangeMode = null;
 		if(this.eChangeBMode != null) {
-			var this14 = this.eChangeBMode;
-			if(this14 != null) {
-				this14.destroy();
+			var this5 = this.eChangeBMode;
+			if(this5 != null) {
+				this5.destroy();
 			}
 		}
 		this.eChangeBMode = null;
 		if(this.eChangeState != null) {
-			var this15 = this.eChangeState;
-			if(this15 != null) {
-				this15.destroy();
+			var this6 = this.eChangeState;
+			if(this6 != null) {
+				this6.destroy();
 			}
 		}
 		this.eChangeState = null;
@@ -6410,8 +6708,8 @@ var pony_ui_gui_IntervalLayoutCore = function(_interval,_vert,_border,_align) {
 	if(_align != null) {
 		tmp2 = _align;
 	} else {
-		var this11 = { a : pony_geom_VAlign.Middle, b : pony_geom_HAlign.Center};
-		_align = this11;
+		var this2 = { a : pony_geom_VAlign.Middle, b : pony_geom_HAlign.Center};
+		_align = this2;
 		tmp2 = _align;
 	}
 	this._align = tmp2;
@@ -6528,8 +6826,8 @@ var pony_ui_gui_RubberLayoutCore = function(_vert,_border,_padding,_align) {
 	if(_align != null) {
 		tmp3 = _align;
 	} else {
-		var this11 = { a : pony_geom_VAlign.Middle, b : pony_geom_HAlign.Center};
-		_align = this11;
+		var this2 = { a : pony_geom_VAlign.Middle, b : pony_geom_HAlign.Center};
+		_align = this2;
 		tmp3 = _align;
 	}
 	this._align = tmp3;
@@ -6721,16 +7019,16 @@ pony_ui_gui_SliderCore.prototype = $extend(pony_ui_gui_BarCore.prototype,{
 		}
 		this.eChangeFinalPercent = null;
 		if(this.eChangeFinalPos != null) {
-			var this11 = this.eChangeFinalPos;
-			if(this11 != null) {
-				this11.destroy();
+			var this2 = this.eChangeFinalPos;
+			if(this2 != null) {
+				this2.destroy();
 			}
 		}
 		this.eChangeFinalPos = null;
 		if(this.eChangeFinalValue != null) {
-			var this12 = this.eChangeFinalValue;
-			if(this12 != null) {
-				this12.destroy();
+			var this3 = this.eChangeFinalValue;
+			if(this3 != null) {
+				this3.destroy();
 			}
 		}
 		this.eChangeFinalValue = null;
@@ -6832,9 +7130,9 @@ pony_ui_gui_SmoothBarCore.prototype = $extend(pony_ui_gui_BarCore.prototype,{
 		if(p != this.smoothPercent) {
 			var this1;
 			if(pony_time_DeltaTime.eFixedUpdate == null) {
-				var this11 = new pony_Priority(null,false);
-				this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-				this1 = pony_time_DeltaTime.eFixedUpdate = this11;
+				var this2 = new pony_Priority(null,false);
+				this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+				this1 = pony_time_DeltaTime.eFixedUpdate = this2;
 			} else {
 				this1 = pony_time_DeltaTime.eFixedUpdate;
 			}
@@ -6849,9 +7147,9 @@ pony_ui_gui_SmoothBarCore.prototype = $extend(pony_ui_gui_BarCore.prototype,{
 				n = this.percent;
 				var this1;
 				if(pony_time_DeltaTime.eFixedUpdate == null) {
-					var this11 = new pony_Priority(null,false);
-					this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-					this1 = pony_time_DeltaTime.eFixedUpdate = this11;
+					var this2 = new pony_Priority(null,false);
+					this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+					this1 = pony_time_DeltaTime.eFixedUpdate = this2;
 				} else {
 					this1 = pony_time_DeltaTime.eFixedUpdate;
 				}
@@ -6859,15 +7157,15 @@ pony_ui_gui_SmoothBarCore.prototype = $extend(pony_ui_gui_BarCore.prototype,{
 			}
 		} else if(n <= this.percent + 0.001) {
 			n = this.percent;
-			var this2;
+			var this3;
 			if(pony_time_DeltaTime.eFixedUpdate == null) {
-				var this12 = new pony_Priority(null,false);
-				this12.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-				this2 = pony_time_DeltaTime.eFixedUpdate = this12;
+				var this4 = new pony_Priority(null,false);
+				this4.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+				this3 = pony_time_DeltaTime.eFixedUpdate = this4;
 			} else {
-				this2 = pony_time_DeltaTime.eFixedUpdate;
+				this3 = pony_time_DeltaTime.eFixedUpdate;
 			}
-			this2.remove({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(this,this.updateSmoothPercent))});
+			this3.remove({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(this,this.updateSmoothPercent))});
 		}
 		if(this.eChangeSmoothPercent == null || n != this.smoothPercent) {
 			var prev = this.smoothPercent;
@@ -6901,16 +7199,16 @@ pony_ui_gui_SmoothBarCore.prototype = $extend(pony_ui_gui_BarCore.prototype,{
 		}
 		this.eChangeSmooth = null;
 		if(this.eChangeSmoothPercent != null) {
-			var this11 = this.eChangeSmoothPercent;
-			if(this11 != null) {
-				this11.destroy();
+			var this2 = this.eChangeSmoothPercent;
+			if(this2 != null) {
+				this2.destroy();
 			}
 		}
 		this.eChangeSmoothPercent = null;
 		if(this.eChangeSmoothPos != null) {
-			var this12 = this.eChangeSmoothPos;
-			if(this12 != null) {
-				this12.destroy();
+			var this3 = this.eChangeSmoothPos;
+			if(this3 != null) {
+				this3.destroy();
 			}
 		}
 		this.eChangeSmoothPos = null;
@@ -7249,63 +7547,63 @@ var pony_ui_touch_TouchableBase = function() {
 	var _this = this.eTap;
 	var this2;
 	if(_this.eTake == null) {
-		var this112 = new pony_Priority(null,false);
-		this112.compare = pony_events__$Event0_Event0_$Impl_$.compare;
-		this2 = _this.eTake = this112;
+		var this3 = new pony_Priority(null,false);
+		this3.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+		this2 = _this.eTake = this3;
 	} else {
 		this2 = _this.eTake;
 	}
 	this2.add({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.eTapTake))});
 	var _this1 = this.eTap;
-	var this3;
-	if(_this1.eLost == null) {
-		var this121 = new pony_Priority(null,false);
-		this121.compare = pony_events__$Event0_Event0_$Impl_$.compare;
-		this3 = _this1.eLost = this121;
-	} else {
-		this3 = _this1.eLost;
-	}
-	this3.add({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.eTapLost))});
-	var _this2 = this.eWheel;
 	var this4;
+	if(_this1.eLost == null) {
+		var this5 = new pony_Priority(null,false);
+		this5.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+		this4 = _this1.eLost = this5;
+	} else {
+		this4 = _this1.eLost;
+	}
+	this4.add({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.eTapLost))});
+	var _this2 = this.eWheel;
+	var this6;
 	if(_this2.eTake == null) {
+		var this7 = new pony_Priority(null,false);
+		this7.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+		this6 = _this2.eTake = this7;
+	} else {
+		this6 = _this2.eTake;
+	}
+	this6.add({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.addWheel))});
+	var _this3 = this.eWheel;
+	var this8;
+	if(_this3.eLost == null) {
+		var this9 = new pony_Priority(null,false);
+		this9.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+		this8 = _this3.eLost = this9;
+	} else {
+		this8 = _this3.eLost;
+	}
+	this8.add({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.removeWheel))});
+	var _this4 = this.eSwipe;
+	var this10;
+	if(_this4.eTake == null) {
+		var this112 = new pony_Priority(null,false);
+		this112.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+		this10 = _this4.eTake = this112;
+	} else {
+		this10 = _this4.eTake;
+	}
+	this10.add({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.addSwipe))});
+	var _this5 = this.eSwipe;
+	var this121;
+	if(_this5.eLost == null) {
 		var this131 = new pony_Priority(null,false);
 		this131.compare = pony_events__$Event0_Event0_$Impl_$.compare;
-		this4 = _this2.eTake = this131;
+		this121 = _this5.eLost = this131;
 	} else {
-		this4 = _this2.eTake;
+		this121 = _this5.eLost;
 	}
-	this4.add({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.addWheel))});
-	var _this3 = this.eWheel;
-	var this5;
-	if(_this3.eLost == null) {
-		var this141 = new pony_Priority(null,false);
-		this141.compare = pony_events__$Event0_Event0_$Impl_$.compare;
-		this5 = _this3.eLost = this141;
-	} else {
-		this5 = _this3.eLost;
-	}
-	this5.add({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.removeWheel))});
-	var _this4 = this.eSwipe;
-	var this6;
-	if(_this4.eTake == null) {
-		var this151 = new pony_Priority(null,false);
-		this151.compare = pony_events__$Event0_Event0_$Impl_$.compare;
-		this6 = _this4.eTake = this151;
-	} else {
-		this6 = _this4.eTake;
-	}
-	this6.add({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.addSwipe))});
-	var _this5 = this.eSwipe;
-	var this7;
-	if(_this5.eLost == null) {
-		var this161 = new pony_Priority(null,false);
-		this161.compare = pony_events__$Event0_Event0_$Impl_$.compare;
-		this7 = _this5.eLost = this161;
-	} else {
-		this7 = _this5.eLost;
-	}
-	this7.add({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.removeSwipe))});
+	this121.add({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.removeSwipe))});
 };
 pony_ui_touch_TouchableBase.__name__ = true;
 pony_ui_touch_TouchableBase.__interfaces__ = [pony_magic_HasSignal];
@@ -7334,9 +7632,9 @@ pony_ui_touch_TouchableBase.prototype = {
 		var this1 = { min : 0, max : 50};
 		var tmp;
 		if(pony_time_DeltaTime.eFixedUpdate == null) {
-			var this11 = new pony_Priority(null,false);
-			this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-			tmp = pony_time_DeltaTime.eFixedUpdate = this11;
+			var this2 = new pony_Priority(null,false);
+			this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			tmp = pony_time_DeltaTime.eFixedUpdate = this2;
 		} else {
 			tmp = pony_time_DeltaTime.eFixedUpdate;
 		}
@@ -7445,9 +7743,9 @@ pony_ui_touch_TouchableBase.prototype = {
 		var this1 = { min : 0, max : 300};
 		var tmp;
 		if(pony_time_DeltaTime.eFixedUpdate == null) {
-			var this11 = new pony_Priority(null,false);
-			this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-			tmp = pony_time_DeltaTime.eFixedUpdate = this11;
+			var this2 = new pony_Priority(null,false);
+			this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+			tmp = pony_time_DeltaTime.eFixedUpdate = this2;
 		} else {
 			tmp = pony_time_DeltaTime.eFixedUpdate;
 		}
@@ -7514,23 +7812,23 @@ pony_ui_touch_TouchableBase.prototype = {
 		var _this = this.eTap;
 		var this1;
 		if(_this.eTake == null) {
-			var this11 = new pony_Priority(null,false);
-			this11.compare = pony_events__$Event0_Event0_$Impl_$.compare;
-			this1 = _this.eTake = this11;
+			var this2 = new pony_Priority(null,false);
+			this2.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+			this1 = _this.eTake = this2;
 		} else {
 			this1 = _this.eTake;
 		}
 		this1.remove({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.eTapTake))});
 		var _this1 = this.eTap;
-		var this2;
+		var this3;
 		if(_this1.eLost == null) {
-			var this12 = new pony_Priority(null,false);
-			this12.compare = pony_events__$Event0_Event0_$Impl_$.compare;
-			this2 = _this1.eLost = this12;
+			var this4 = new pony_Priority(null,false);
+			this4.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+			this3 = _this1.eLost = this4;
 		} else {
-			this2 = _this1.eLost;
+			this3 = _this1.eLost;
 		}
-		this2.remove({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.eTapLost))});
+		this3.remove({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.eTapLost))});
 		this.destroySignals();
 	}
 	,check: function() {
@@ -7652,54 +7950,54 @@ pony_ui_touch_TouchableBase.prototype = {
 			this1.destroy();
 		}
 		this.eOver = null;
-		var this11 = this.eOut;
-		if(this11 != null) {
-			this11.destroy();
+		var this2 = this.eOut;
+		if(this2 != null) {
+			this2.destroy();
 		}
 		this.eOut = null;
-		var this12 = this.eOutUp;
-		if(this12 != null) {
-			this12.destroy();
+		var this3 = this.eOutUp;
+		if(this3 != null) {
+			this3.destroy();
 		}
 		this.eOutUp = null;
-		var this13 = this.eOverDown;
-		if(this13 != null) {
-			this13.destroy();
+		var this4 = this.eOverDown;
+		if(this4 != null) {
+			this4.destroy();
 		}
 		this.eOverDown = null;
-		var this14 = this.eOutDown;
-		if(this14 != null) {
-			this14.destroy();
+		var this5 = this.eOutDown;
+		if(this5 != null) {
+			this5.destroy();
 		}
 		this.eOutDown = null;
-		var this15 = this.eDown;
-		if(this15 != null) {
-			this15.destroy();
+		var this6 = this.eDown;
+		if(this6 != null) {
+			this6.destroy();
 		}
 		this.eDown = null;
-		var this16 = this.eUp;
-		if(this16 != null) {
-			this16.destroy();
+		var this7 = this.eUp;
+		if(this7 != null) {
+			this7.destroy();
 		}
 		this.eUp = null;
-		var this17 = this.eClick;
-		if(this17 != null) {
-			this17.destroy();
+		var this8 = this.eClick;
+		if(this8 != null) {
+			this8.destroy();
 		}
 		this.eClick = null;
-		var this18 = this.eTap;
-		if(this18 != null) {
-			this18.destroy();
+		var this9 = this.eTap;
+		if(this9 != null) {
+			this9.destroy();
 		}
 		this.eTap = null;
-		var this19 = this.eWheel;
-		if(this19 != null) {
-			this19.destroy();
+		var this10 = this.eWheel;
+		if(this10 != null) {
+			this10.destroy();
 		}
 		this.eWheel = null;
-		var this110 = this.eSwipe;
-		if(this110 != null) {
-			this110.destroy();
+		var this11 = this.eSwipe;
+		if(this11 != null) {
+			this11.destroy();
 		}
 		this.eSwipe = null;
 	}
@@ -8125,23 +8423,23 @@ pony_ui_touch_pixi_Touchable.mouseHandler = function() {
 	pony_ui_touch_pixi_Touchable.needSw = true;
 	var f = { once : false, listener : pony_events_Listener1Type.LFunction0(pony_ui_touch_pixi_Touchable.needSwToMouse)};
 	var this1 = { min : 0, max : 500};
-	var t1;
+	var t;
 	if(pony_time_DeltaTime.eFixedUpdate == null) {
 		var this2 = new pony_Priority(null,false);
 		this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-		t1 = pony_time_DeltaTime.eFixedUpdate = this2;
+		t = pony_time_DeltaTime.eFixedUpdate = this2;
 	} else {
-		t1 = pony_time_DeltaTime.eFixedUpdate;
+		t = pony_time_DeltaTime.eFixedUpdate;
 	}
-	var t11 = new pony_time_DTimer(t1,this1,0);
+	var t1 = new pony_time_DTimer(t,this1,0);
 	f.once = true;
-	t11.eComplete.add(f,0);
-	var e = { once : false, listener : pony_events_Listener1Type.LFunction0($bind(t11,t11.destroy))};
+	t1.eComplete.add(f,0);
+	var e = { once : false, listener : pony_events_Listener1Type.LFunction0($bind(t1,t1.destroy))};
 	e.once = true;
-	t11.eComplete.add(e,0);
-	t11.updateSignal.add({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(t11,t11._update))});
+	t1.eComplete.add(e,0);
+	t1.updateSignal.add({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(t1,t1._update))});
 	if(null != null) {
-		t11._update(null);
+		t1._update(null);
 	}
 };
 pony_ui_touch_pixi_Touchable.needSwToMouse = function() {
