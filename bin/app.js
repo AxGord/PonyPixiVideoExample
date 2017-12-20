@@ -66,8 +66,11 @@ var pony_pixi_App = function(container,width,height,bg,parentDom,smallDeviceQual
 		smallDeviceQuality = 3;
 	}
 	var this1 = new pony_Priority(null,false);
-	this1.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-	this.eResize = this1;
+	this1.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+	this.eFrequentResize = this1;
+	var this11 = new pony_Priority(null,false);
+	this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+	this.eResize = this11;
 	this.renderPause = false;
 	this.width = width;
 	this.height = height;
@@ -75,16 +78,16 @@ var pony_pixi_App = function(container,width,height,bg,parentDom,smallDeviceQual
 	this.parentDom = parentDom;
 	this.smallDeviceQuality = smallDeviceQuality;
 	this.smallDeviceQualityOffset = 1 - 1 / smallDeviceQuality;
-	var this11 = { min : 0, max : resizeInterval};
+	var this12 = { min : 0, max : resizeInterval};
 	var tmp;
 	if(pony_time_DeltaTime.eFixedUpdate == null) {
-		var this2 = new pony_Priority(null,false);
-		this2.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-		tmp = pony_time_DeltaTime.eFixedUpdate = this2;
+		var this111 = new pony_Priority(null,false);
+		this111.compare = pony_events__$Event1_Event1_$Impl_$.compare;
+		tmp = pony_time_DeltaTime.eFixedUpdate = this111;
 	} else {
 		tmp = pony_time_DeltaTime.eFixedUpdate;
 	}
-	this.resizeTimer = new pony_time_DTimer(tmp,this11,0);
+	this.resizeTimer = new pony_time_DTimer(tmp,this12,0);
 	this.resizeTimer.eComplete.add({ once : false, listener : pony_events_Listener1Type.LFunction0($bind(this,this.resizeHandler))});
 	window.addEventListener("orientationchange",$bind(this,this.refreshSize),true);
 	window.addEventListener("focus",$bind(this,this.refreshSize),true);
@@ -99,9 +102,9 @@ var pony_pixi_App = function(container,width,height,bg,parentDom,smallDeviceQual
 	var renderingOptions = { width : width, height : height, view : this.canvas, backgroundColor : this.background, resolution : 1, antialias : false, forceFXAA : false, autoResize : false, transparent : false, clearBeforeRender : true, preserveDrawingBuffer : false, roundPixels : true};
 	this.app = new PIXI.Application(renderingOptions);
 	if(parentDom == null) {
-		parentDom = window.document.body;
+		this.parentDom = window.document.body;
 	}
-	parentDom.appendChild(this.app.view);
+	this.parentDom.appendChild(this.app.view);
 	this.isWebGL = this.app.renderer.type == PIXI.RENDERER_TYPE.WEBGL;
 	if(backImg != null) {
 		this.backImgcontainer = backImg;
@@ -170,6 +173,7 @@ pony_pixi_App.prototype = {
 		return this1;
 	}
 	,refreshSize: function(_) {
+		pony_events__$Event0_Event0_$Impl_$.dispatch(this.eFrequentResize);
 		this.resizeTimer.reset();
 		var _this = this.resizeTimer;
 		_this.updateSignal.add({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(_this,_this._update))});
@@ -459,19 +463,43 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 		case "fsbutton":
 			obj = new pony_pixi_ui_FSButton(pony_ui_xml_PixiXmlUi.splitAttr(attrs.skin),null,attrs.src);
 			break;
+		case "html":
+			var s14 = attrs.x;
+			var c = s14 == null ? 0 : parseFloat(s14) * this.SCALE;
+			var s15 = attrs.y;
+			var c1 = s15 == null ? 0 : parseFloat(s15) * this.SCALE;
+			var s16 = attrs.w;
+			var c2 = s16 == null ? 0 : parseFloat(s16) * this.SCALE;
+			var s17 = attrs.h;
+			var c3 = new pony_pixi_ui_HtmlContainer({ x : c, y : c1, width : c2, height : s17 == null ? 0 : parseFloat(s17) * this.SCALE},this.app);
+			var s18 = attrs.div;
+			if(s18 != null && StringTools.trim(s18.toLowerCase()) == "true") {
+				var div = window.document.createElement("div");
+				if(attrs.src != null) {
+					div.innerHTML = pony_pixi_PixiAssets.text(attrs.src);
+				}
+				if(attrs.color != null) {
+					div.style.backgroundColor = attrs.color;
+				}
+				this.app.parentDom.appendChild(div);
+				c3.htmlContainer.set_targetStyle(div.style);
+				c3.element = div;
+			}
+			obj = c3;
+			break;
 		case "image":
 			obj = pony_pixi_PixiAssets.image(attrs.src,attrs.name);
 			break;
 		case "layout":
-			var s14 = attrs.align;
+			var s19 = attrs.align;
 			var align;
-			if(s14 == null) {
+			if(s19 == null) {
 				align = null;
 			} else {
 				var hor = null;
 				var vert = null;
 				var _g5 = 0;
-				var _g12 = s14.split(" ");
+				var _g12 = s19.split(" ");
 				while(_g5 < _g12.length) {
 					var v = _g12[_g5];
 					++_g5;
@@ -506,8 +534,8 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 			}
 			if(attrs.src != null) {
 				var l = pony_pixi_PixiAssets.image(attrs.src,attrs.name);
-				var s15 = attrs.vert;
-				var l1 = s15 != null && StringTools.trim(s15.toLowerCase()) == "true";
+				var s20 = attrs.vert;
+				var l1 = s20 != null && StringTools.trim(s20.toLowerCase()) == "true";
 				var this4 = pony_geom__$Border_Border_$Impl_$.fromString(attrs.border);
 				var rhs1 = this.SCALE;
 				var top1 = this4.top * rhs1;
@@ -534,8 +562,8 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 				}
 				obj = l2;
 			} else if(attrs.iv != null) {
-				var s16 = attrs.iv;
-				var l3 = s16 == null ? 0 : Std.parseInt(s16) * this.SCALE | 0;
+				var s21 = attrs.iv;
+				var l3 = s21 == null ? 0 : Std.parseInt(s21) * this.SCALE | 0;
 				var this6 = pony_geom__$Border_Border_$Impl_$.fromString(attrs.border);
 				var rhs2 = this.SCALE;
 				var top2 = this6.top * rhs2;
@@ -562,8 +590,8 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 				}
 				obj = l4;
 			} else if(attrs.ih != null) {
-				var s17 = attrs.ih;
-				var l5 = s17 == null ? 0 : Std.parseInt(s17) * this.SCALE | 0;
+				var s22 = attrs.ih;
+				var l5 = s22 == null ? 0 : Std.parseInt(s22) * this.SCALE | 0;
 				var this8 = pony_geom__$Border_Border_$Impl_$.fromString(attrs.border);
 				var rhs3 = this.SCALE;
 				var top3 = this8.top * rhs3;
@@ -590,12 +618,12 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 				}
 				obj = l6;
 			} else if(attrs.w != null || attrs.h != null) {
-				var s18 = attrs.w;
-				var r = s18 == null ? 0 : parseFloat(s18) * this.SCALE;
-				var s19 = attrs.h;
-				var r1 = s19 == null ? 0 : parseFloat(s19) * this.SCALE;
-				var s20 = attrs.vert;
-				var r2 = s20 != null && StringTools.trim(s20.toLowerCase()) == "true";
+				var s23 = attrs.w;
+				var r = s23 == null ? 0 : parseFloat(s23) * this.SCALE;
+				var s24 = attrs.h;
+				var r1 = s24 == null ? 0 : parseFloat(s24) * this.SCALE;
+				var s25 = attrs.vert;
+				var r2 = s25 != null && StringTools.trim(s25.toLowerCase()) == "true";
 				var this10 = pony_geom__$Border_Border_$Impl_$.fromString(attrs.border);
 				var rhs4 = this.SCALE;
 				var top4 = this10.top * rhs4;
@@ -617,9 +645,9 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 				if(attrs.padding == null) {
 					r3 = true;
 				} else {
-					var s21 = attrs.padding;
-					if(s21 != null) {
-						r3 = StringTools.trim(s21.toLowerCase()) == "true";
+					var s26 = attrs.padding;
+					if(s26 != null) {
+						r3 = StringTools.trim(s26.toLowerCase()) == "true";
 					} else {
 						r3 = false;
 					}
@@ -633,20 +661,20 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 				}
 				obj = r4;
 			} else {
-				var s22 = new pony_pixi_ui_AlignLayout(align);
+				var s27 = new pony_pixi_ui_AlignLayout(align);
 				var _g10 = 0;
 				while(_g10 < content.length) {
 					var e5 = content[_g10];
 					++_g10;
-					s22.add(e5);
+					s27.add(e5);
 				}
-				obj = s22;
+				obj = s27;
 			}
 			break;
 		case "lbutton":
 			var b1 = pony_ui_xml_PixiXmlUi.splitAttr(attrs.skin);
-			var s23 = attrs.vert;
-			var b2 = s23 != null && StringTools.trim(s23.toLowerCase()) == "true";
+			var s28 = attrs.vert;
+			var b2 = s28 != null && StringTools.trim(s28.toLowerCase()) == "true";
 			var this16 = pony_geom__$Border_Border_$Impl_$.fromString(attrs.border);
 			var rhs5 = this.SCALE;
 			var top5 = this16.top * rhs5;
@@ -667,17 +695,29 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 			var b3 = new pony_pixi_ui_LabelButton(b1,b2,this17,null,attrs.src);
 			var _g13 = 0;
 			while(_g13 < content.length) {
-				var c = content[_g13];
+				var c4 = content[_g13];
 				++_g13;
-				b3.add(c);
+				b3.add(c4);
 			}
 			obj = b3;
+			break;
+		case "line":
+			var color1 = pony_color__$UColor_UColor_$Impl_$.fromString(attrs.color);
+			var g1 = new PIXI.Graphics(true);
+			var s29 = attrs.size;
+			g1.lineStyle(s29 == null ? 0 : parseFloat(s29) * this.SCALE,color1 & 16777215,_$UInt_UInt_$Impl_$.toFloat((255 - (color1 >>> 24 & 255) << 24) + ((color1 >>> 16 & 255) << 16) + ((color1 >>> 8 & 255) << 8) + (color1 & 255) >>> 24 & 255) / _$UInt_UInt_$Impl_$.toFloat(255));
+			g1.moveTo(0,0);
+			var s30 = attrs.w;
+			var obj4 = s30 == null ? 0 : parseFloat(s30) * this.SCALE;
+			var s31 = attrs.h;
+			g1.lineTo(obj4,s31 == null ? 0 : parseFloat(s31) * this.SCALE);
+			obj = g1;
 			break;
 		case "mask":
 			var o = parseFloat(attrs.w) * this.SCALE;
 			var o1 = parseFloat(attrs.h) * this.SCALE;
-			var s24 = attrs.radius;
-			var o2 = new pony_pixi_ui_Mask(o,o1,s24 == null ? 0 : Std.parseInt(s24) * this.SCALE | 0,content.shift());
+			var s32 = attrs.radius;
+			var o2 = new pony_pixi_ui_Mask(o,o1,s32 == null ? 0 : Std.parseInt(s32) * this.SCALE | 0,content.shift());
 			var _g14 = 0;
 			while(_g14 < content.length) {
 				var e6 = content[_g14];
@@ -691,14 +731,14 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 			if(attrs.font == null) {
 				font = null;
 			} else {
-				var s25 = attrs.size;
-				font = (s25 == null ? 0 : Std.parseInt(s25) * this.SCALE | 0) + "px " + attrs.font;
+				var s33 = attrs.size;
+				font = (s33 == null ? 0 : Std.parseInt(s33) * this.SCALE | 0) + "px " + attrs.font;
 			}
 			var attrs3 = attrs.bg;
 			var attrs4 = attrs.begin;
 			var attrs5 = attrs.fill;
 			var attrs6 = attrs.anim;
-			var obj4 = attrs.animspeed == null ? null : pony_time__$Time_Time_$Impl_$.fromString(attrs.animspeed);
+			var obj5 = attrs.animspeed == null ? null : pony_time__$Time_Time_$Impl_$.fromString(attrs.animspeed);
 			var this18 = pony_geom__$Border_Border_$Impl_$.fromString(attrs.border);
 			var rhs6 = this.SCALE;
 			var top6 = this18.top * rhs6;
@@ -716,55 +756,71 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 				bottom6 = top6;
 			}
 			this19 = { top : top6, left : left6, right : right6, bottom : bottom6};
-			var obj5 = font == null ? null : pony_pixi_ETextStyle.BITMAP_TEXT_STYLE({ font : font, tint : pony_color__$UColor_UColor_$Impl_$.fromString(attrs.color) & 16777215});
-			var s26 = attrs.shadow;
-			var obj6 = s26 != null && StringTools.trim(s26.toLowerCase()) == "true";
-			var s27 = attrs.invert;
-			var obj7 = s27 != null && StringTools.trim(s27.toLowerCase()) == "true";
-			var obj8 = font == null || attrs.src.indexOf(",") != -1;
-			var s28 = attrs.creep;
-			var obj9 = s28 == null ? 0 : Std.parseInt(s28) * this.SCALE | 0;
-			var s29 = attrs.smooth;
-			obj = new pony_pixi_ui_ProgressBar(attrs3,attrs4,attrs5,attrs6,obj4,this19,obj5,obj6,obj7,obj8,obj9,s29 != null && StringTools.trim(s29.toLowerCase()) == "true");
+			var obj6 = font == null ? null : pony_pixi_ETextStyle.BITMAP_TEXT_STYLE({ font : font, tint : pony_color__$UColor_UColor_$Impl_$.fromString(attrs.color) & 16777215});
+			var s34 = attrs.shadow;
+			var obj7 = s34 != null && StringTools.trim(s34.toLowerCase()) == "true";
+			var s35 = attrs.invert;
+			var obj8 = s35 != null && StringTools.trim(s35.toLowerCase()) == "true";
+			var obj9 = font == null || attrs.src.indexOf(",") != -1;
+			var s36 = attrs.creep;
+			var obj10 = s36 == null ? 0 : Std.parseInt(s36) * this.SCALE | 0;
+			var s37 = attrs.smooth;
+			obj = new pony_pixi_ui_ProgressBar(attrs3,attrs4,attrs5,attrs6,obj5,this19,obj6,obj7,obj8,obj9,obj10,s37 != null && StringTools.trim(s37.toLowerCase()) == "true");
 			break;
 		case "rect":
-			var color1 = pony_color__$UColor_UColor_$Impl_$.fromString(attrs.color);
-			var g1 = new PIXI.Graphics();
-			g1.lineStyle();
-			g1.beginFill(color1 & 16777215,_$UInt_UInt_$Impl_$.toFloat((255 - (color1 >>> 24 & 255) << 24) + ((color1 >>> 16 & 255) << 16) + ((color1 >>> 8 & 255) << 8) + (color1 & 255) >>> 24 & 255) / _$UInt_UInt_$Impl_$.toFloat(255));
+			var color2 = pony_color__$UColor_UColor_$Impl_$.fromString(attrs.color);
+			var g2 = new PIXI.Graphics();
+			g2.lineStyle();
+			g2.beginFill(color2 & 16777215,_$UInt_UInt_$Impl_$.toFloat((255 - (color2 >>> 24 & 255) << 24) + ((color2 >>> 16 & 255) << 16) + ((color2 >>> 8 & 255) << 8) + (color2 & 255) >>> 24 & 255) / _$UInt_UInt_$Impl_$.toFloat(255));
 			if(attrs.round == null) {
-				var s30 = attrs.w;
-				var obj10 = s30 == null ? 0 : parseFloat(s30) * this.SCALE;
-				var s31 = attrs.h;
-				g1.drawRect(0,0,obj10,s31 == null ? 0 : parseFloat(s31) * this.SCALE);
+				var s38 = attrs.w;
+				var obj11 = s38 == null ? 0 : parseFloat(s38) * this.SCALE;
+				var s39 = attrs.h;
+				g2.drawRect(0,0,obj11,s39 == null ? 0 : parseFloat(s39) * this.SCALE);
 			} else {
-				var s32 = attrs.w;
-				var obj11 = s32 == null ? 0 : parseFloat(s32) * this.SCALE;
-				var s33 = attrs.h;
-				var obj12 = s33 == null ? 0 : parseFloat(s33) * this.SCALE;
-				var s34 = attrs.round;
-				g1.drawRoundedRect(0,0,obj11,obj12,s34 == null ? 0 : Std.parseInt(s34) * this.SCALE | 0);
+				var s40 = attrs.w;
+				var obj12 = s40 == null ? 0 : parseFloat(s40) * this.SCALE;
+				var s41 = attrs.h;
+				var obj13 = s41 == null ? 0 : parseFloat(s41) * this.SCALE;
+				var s42 = attrs.round;
+				g2.drawRoundedRect(0,0,obj12,obj13,s42 == null ? 0 : Std.parseInt(s42) * this.SCALE | 0);
 			}
-			g1.endFill();
-			obj = g1;
+			g2.endFill();
+			obj = g2;
+			break;
+		case "render":
+			var s43 = attrs.w;
+			var r5 = s43 == null ? 0 : parseFloat(s43) * this.SCALE;
+			var s44 = attrs.h;
+			var r6 = s44 == null ? 0 : parseFloat(s44) * this.SCALE;
+			var s45 = attrs.canvas;
+			var r7 = new pony_pixi_ui_RenderBox(r5,r6,null,s45 != null && StringTools.trim(s45.toLowerCase()) == "true");
+			var _g15 = 0;
+			while(_g15 < content.length) {
+				var c5 = content[_g15];
+				++_g15;
+				r7.container.addChild(c5);
+			}
+			r7.update();
+			obj = r7;
 			break;
 		case "slice":
-			var s35 = attrs.creep;
-			var s36 = pony_pixi_ui_slices_SliceTools.getSliceSprite(attrs.name,attrs.src,s35 == null ? 0 : parseFloat(s35) * this.SCALE);
+			var s46 = attrs.creep;
+			var s47 = pony_pixi_ui_slices_SliceTools.getSliceSprite(attrs.name,attrs.src,s46 == null ? 0 : parseFloat(s46) * this.SCALE);
 			if(attrs.w != null) {
-				var s37 = attrs.w;
-				s36.set_sliceWidth(s37 == null ? 0 : parseFloat(s37) * this.SCALE);
+				var s48 = attrs.w;
+				s47.set_sliceWidth(s48 == null ? 0 : parseFloat(s48) * this.SCALE);
 			}
 			if(attrs.h != null) {
-				var s38 = attrs.h;
-				s36.set_sliceHeight(s38 == null ? 0 : parseFloat(s38) * this.SCALE);
+				var s49 = attrs.h;
+				s47.set_sliceHeight(s49 == null ? 0 : parseFloat(s49) * this.SCALE);
 			}
-			obj = s36;
+			obj = s47;
 			break;
 		case "slider":
 			var b4 = pony_ui_xml_PixiXmlUi.splitAttr(attrs.skin);
-			var s39 = attrs.vert;
-			var b5 = s39 != null && StringTools.trim(s39.toLowerCase()) == "true";
+			var s50 = attrs.vert;
+			var b5 = s50 != null && StringTools.trim(s50.toLowerCase()) == "true";
 			var this20 = pony_geom__$Border_Border_$Impl_$.fromString(attrs.border);
 			var rhs7 = this.SCALE;
 			var top7 = this20.top * rhs7;
@@ -783,14 +839,14 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 			}
 			this21 = { top : top7, left : left7, right : right7, bottom : bottom7};
 			var b6 = new pony_pixi_ui_LabelButton(b4,b5,this21,null,attrs.src);
-			var s40 = attrs.w;
-			var b7 = s40 == null ? 0 : parseFloat(s40) * this.SCALE;
-			var s41 = attrs.h;
-			var b8 = s41 == null ? 0 : parseFloat(s41) * this.SCALE;
-			var s42 = attrs.invert;
-			var b9 = s42 != null && StringTools.trim(s42.toLowerCase()) == "true";
-			var s43 = attrs.draggable;
-			var b10 = new pony_pixi_ui_StepSlider(b6,b7,b8,b9,!(s43 != null && StringTools.trim(s43.toLowerCase()) != "true"));
+			var s51 = attrs.w;
+			var b7 = s51 == null ? 0 : parseFloat(s51) * this.SCALE;
+			var s52 = attrs.h;
+			var b8 = s52 == null ? 0 : parseFloat(s52) * this.SCALE;
+			var s53 = attrs.invert;
+			var b9 = s53 != null && StringTools.trim(s53.toLowerCase()) == "true";
+			var s54 = attrs.draggable;
+			var b10 = new pony_pixi_ui_StepSlider(b6,b7,b8,b9,!(s54 != null && StringTools.trim(s54.toLowerCase()) != "true"));
 			if(attrs.step != null) {
 				var _this1 = b10.sliderCore;
 				var v1 = parseFloat(attrs.step);
@@ -798,30 +854,30 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 				_this1.percentRound = pony_math_MathTools.lengthAfterComma(v1);
 				_this1.valueRound = -1;
 			}
-			var _g15 = 0;
-			while(_g15 < content.length) {
-				var c1 = content[_g15];
-				++_g15;
-				b10.add(c1);
+			var _g16 = 0;
+			while(_g16 < content.length) {
+				var c6 = content[_g16];
+				++_g16;
+				b10.add(c6);
 			}
 			obj = b10;
 			break;
 		case "text":
-			var s44 = attrs.size;
-			var font1 = (s44 == null ? 0 : Std.parseInt(s44) * this.SCALE | 0) + "px " + attrs.font;
+			var s55 = attrs.size;
+			var font1 = (s55 == null ? 0 : Std.parseInt(s55) * this.SCALE | 0) + "px " + attrs.font;
 			var text = pony_ui_xml_PixiXmlUi.textTransform(this._putData(content),attrs.transform);
 			var style = { font : font1, tint : pony_color__$UColor_UColor_$Impl_$.fromString(attrs.color) & 16777215};
-			var s45 = attrs.shadow;
-			obj = new pony_pixi_ui_BText(text,style,attrs.ansi,s45 != null && StringTools.trim(s45.toLowerCase()) == "true");
+			var s56 = attrs.shadow;
+			obj = new pony_pixi_ui_BText(text,style,attrs.ansi,s56 != null && StringTools.trim(s56.toLowerCase()) == "true");
 			break;
 		case "textbox":
-			var s46 = attrs.size;
-			var font2 = (s46 == null ? 0 : Std.parseInt(s46) * this.SCALE | 0) + "px " + attrs.font;
+			var s57 = attrs.size;
+			var font2 = (s57 == null ? 0 : Std.parseInt(s57) * this.SCALE | 0) + "px " + attrs.font;
 			var text1 = pony_ui_xml_PixiXmlUi.textTransform(this._putData(content),attrs.transform);
 			var style1 = pony_pixi_ETextStyle.BITMAP_TEXT_STYLE({ font : font2, tint : pony_color__$UColor_UColor_$Impl_$.fromString(attrs.color) & 16777215});
-			var s47 = pony_pixi_PixiAssets.image(attrs.src,attrs.name);
-			var s48 = attrs.hidebg;
-			s47.visible = !(s48 != null && StringTools.trim(s48.toLowerCase()) == "true");
+			var s58 = pony_pixi_PixiAssets.image(attrs.src,attrs.name);
+			var s59 = attrs.hidebg;
+			s58.visible = !(s59 != null && StringTools.trim(s59.toLowerCase()) == "true");
 			var this22 = pony_geom__$Border_Border_$Impl_$.fromString(attrs.border);
 			var rhs8 = this.SCALE;
 			var top8 = this22.top * rhs8;
@@ -839,37 +895,37 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 				bottom8 = top8;
 			}
 			this23 = { top : top8, left : left8, right : right8, bottom : bottom8};
-			var s49 = attrs.nocache;
-			var obj13 = s49 != null && StringTools.trim(s49.toLowerCase()) == "true";
-			var s50 = attrs.shadow;
-			obj = new pony_pixi_ui_TextBox(s47,text1,style1,null,this23,obj13,s50 != null && StringTools.trim(s50.toLowerCase()) == "true");
+			var s60 = attrs.nocache;
+			var obj14 = s60 != null && StringTools.trim(s60.toLowerCase()) == "true";
+			var s61 = attrs.shadow;
+			obj = new pony_pixi_ui_TextBox(s58,text1,style1,null,this23,obj14,s61 != null && StringTools.trim(s61.toLowerCase()) == "true");
 			break;
 		case "textbutton":
-			var s51 = attrs.size;
-			var font3 = (s51 == null ? 0 : Std.parseInt(s51) * this.SCALE | 0) + "px " + attrs.font;
+			var s62 = attrs.size;
+			var font3 = (s62 == null ? 0 : Std.parseInt(s62) * this.SCALE | 0) + "px " + attrs.font;
 			var text2 = pony_ui_xml_PixiXmlUi.textTransform(this._putData(content),attrs.transform);
-			var obj14 = attrs.color.split(" ").map(pony_color__$UColor_UColor_$Impl_$.fromString);
+			var obj15 = attrs.color.split(" ").map(pony_color__$UColor_UColor_$Impl_$.fromString);
 			var attrs7 = attrs.ansi;
-			var s52 = attrs.line;
-			var obj15 = s52 == null ? 0 : parseFloat(s52) * this.SCALE;
-			var s53 = attrs.linepos;
-			obj = new pony_pixi_ui_TextButton(obj14,text2,font3,attrs7,obj15,s53 == null ? 0 : parseFloat(s53) * this.SCALE);
+			var s63 = attrs.line;
+			var obj16 = s63 == null ? 0 : parseFloat(s63) * this.SCALE;
+			var s64 = attrs.linepos;
+			obj = new pony_pixi_ui_TextButton(obj15,text2,font3,attrs7,obj16,s64 == null ? 0 : parseFloat(s64) * this.SCALE);
 			break;
 		case "tile":
-			var obj16 = pony_pixi_PixiAssets.texture(attrs.src,attrs.name);
-			var s54 = attrs.w;
-			var obj17 = s54 == null ? 0 : parseFloat(s54) * this.SCALE;
-			var s55 = attrs.h;
-			obj = new PIXI.extras.TilingSprite(obj16,obj17,s55 == null ? 0 : parseFloat(s55) * this.SCALE);
+			var obj17 = pony_pixi_PixiAssets.texture(attrs.src,attrs.name);
+			var s65 = attrs.w;
+			var obj18 = s65 == null ? 0 : parseFloat(s65) * this.SCALE;
+			var s66 = attrs.h;
+			obj = new PIXI.extras.TilingSprite(obj17,obj18,s66 == null ? 0 : parseFloat(s66) * this.SCALE);
 			break;
 		case "timebar":
-			var s56 = attrs.size;
-			var font4 = (s56 == null ? 0 : Std.parseInt(s56) * this.SCALE | 0) + "px " + attrs.font;
+			var s67 = attrs.size;
+			var font4 = (s67 == null ? 0 : Std.parseInt(s67) * this.SCALE | 0) + "px " + attrs.font;
 			var attrs8 = attrs.bg;
 			var attrs9 = attrs.begin;
 			var attrs10 = attrs.fill;
 			var attrs11 = attrs.anim;
-			var obj18 = attrs.animspeed == null ? null : pony_time__$Time_Time_$Impl_$.fromString(attrs.animspeed);
+			var obj19 = attrs.animspeed == null ? null : pony_time__$Time_Time_$Impl_$.fromString(attrs.animspeed);
 			var this24 = pony_geom__$Border_Border_$Impl_$.fromString(attrs.border);
 			var rhs9 = this.SCALE;
 			var top9 = this24.top * rhs9;
@@ -887,24 +943,24 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 				bottom9 = top9;
 			}
 			this25 = { top : top9, left : left9, right : right9, bottom : bottom9};
-			var obj19 = pony_pixi_ETextStyle.BITMAP_TEXT_STYLE({ font : font4, tint : pony_color__$UColor_UColor_$Impl_$.fromString(attrs.color) & 16777215});
-			var s57 = attrs.shadow;
-			var obj20 = s57 != null && StringTools.trim(s57.toLowerCase()) == "true";
-			var s58 = attrs.invert;
-			var obj21 = s58 != null && StringTools.trim(s58.toLowerCase()) == "true";
-			var obj22 = attrs.src.indexOf(",") != -1;
-			var s59 = attrs.creep;
-			obj = new pony_pixi_ui_TimeBar(attrs8,attrs9,attrs10,attrs11,obj18,this25,obj19,obj20,obj21,obj22,s59 == null ? 0 : Std.parseInt(s59) * this.SCALE | 0);
+			var obj20 = pony_pixi_ETextStyle.BITMAP_TEXT_STYLE({ font : font4, tint : pony_color__$UColor_UColor_$Impl_$.fromString(attrs.color) & 16777215});
+			var s68 = attrs.shadow;
+			var obj21 = s68 != null && StringTools.trim(s68.toLowerCase()) == "true";
+			var s69 = attrs.invert;
+			var obj22 = s69 != null && StringTools.trim(s69.toLowerCase()) == "true";
+			var obj23 = attrs.src.indexOf(",") != -1;
+			var s70 = attrs.creep;
+			obj = new pony_pixi_ui_TimeBar(attrs8,attrs9,attrs10,attrs11,obj19,this25,obj20,obj21,obj22,obj23,s70 == null ? 0 : Std.parseInt(s70) * this.SCALE | 0);
 			break;
 		case "video":
-			var s60 = attrs.x;
-			var video = s60 == null ? 0 : parseFloat(s60) * this.SCALE;
-			var s61 = attrs.y;
-			var video1 = s61 == null ? 0 : parseFloat(s61) * this.SCALE;
-			var s62 = attrs.w;
-			var video2 = s62 == null ? 0 : parseFloat(s62) * this.SCALE;
-			var s63 = attrs.h;
-			var video3 = new pony_pixi_ui_HtmlVideoUI({ x : video, y : video1, width : video2, height : s63 == null ? 0 : parseFloat(s63) * this.SCALE},pony_pixi_App.main);
+			var s71 = attrs.x;
+			var video = s71 == null ? 0 : parseFloat(s71) * this.SCALE;
+			var s72 = attrs.y;
+			var video1 = s72 == null ? 0 : parseFloat(s72) * this.SCALE;
+			var s73 = attrs.w;
+			var video2 = s73 == null ? 0 : parseFloat(s73) * this.SCALE;
+			var s74 = attrs.h;
+			var video3 = new pony_pixi_ui_HtmlVideoUI({ x : video, y : video1, width : video2, height : s74 == null ? 0 : parseFloat(s74) * this.SCALE},this.app);
 			var src = attrs.src;
 			if(src != null) {
 				video3.video.loadVideo(src);
@@ -912,14 +968,14 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 			obj = video3;
 			break;
 		case "zeroplace":
-			var s64 = new pony_pixi_ui_ZeroPlace();
-			var _g16 = 0;
-			while(_g16 < content.length) {
-				var e7 = content[_g16];
-				++_g16;
-				s64.add(e7);
+			var s75 = new pony_pixi_ui_ZeroPlace();
+			var _g17 = 0;
+			while(_g17 < content.length) {
+				var e7 = content[_g17];
+				++_g17;
+				s75.add(e7);
 			}
-			obj = s64;
+			obj = s75;
 			break;
 		default:
 			obj = this.customUIElement(name,attrs,content);
@@ -934,8 +990,8 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 				obj.pivot.set(parseFloat(a2[0]) * w,parseFloat(a2[1]) * h);
 			}
 		}
-		var s65 = attrs.notouch;
-		if(s65 != null && StringTools.trim(s65.toLowerCase()) == "true") {
+		var s76 = attrs.notouch;
+		if(s76 != null && StringTools.trim(s76.toLowerCase()) == "true") {
 			obj.interactive = false;
 			obj.interactiveChildren = false;
 			obj.hitArea = new PIXI.Rectangle(0,0,0,0);
@@ -951,42 +1007,42 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 		}
 		if(attrs.filters != null) {
 			var a3 = [];
-			var _g17 = 0;
-			var _g18 = pony_ui_xml_PixiXmlUi.splitAttr(attrs.filters);
-			while(_g17 < _g18.length) {
-				var f = _g18[_g17];
-				++_g17;
+			var _g18 = 0;
+			var _g19 = pony_ui_xml_PixiXmlUi.splitAttr(attrs.filters);
+			while(_g18 < _g19.length) {
+				var f = _g19[_g18];
+				++_g18;
 				var _this2 = this.FILTERS;
 				if(__map_reserved[f] != null ? _this2.existsReserved(f) : _this2.h.hasOwnProperty(f)) {
 					var _this3 = this.FILTERS;
 					a3.push(__map_reserved[f] != null ? _this3.getReserved(f) : _this3.h[f]);
 					var _this4 = this.FILTERS;
 					if(js_Boot.__instanceof(__map_reserved[f] != null ? _this4.getReserved(f) : _this4.h[f],PIXI.filters.GlowFilter)) {
-						var obj23 = [obj];
+						var obj24 = [obj];
 						var _this5 = this.FILTERS;
-						var g2 = __map_reserved[f] != null ? _this5.getReserved(f) : _this5.h[f];
-						var s66 = [g2.outerStrength + 2];
+						var g3 = __map_reserved[f] != null ? _this5.getReserved(f) : _this5.h[f];
+						var s77 = [g3.outerStrength + 2];
 						var f1 = null;
-						if(js_Boot.__instanceof(obj23[0],pony_geom_IWH)) {
-							f1 = (function(s67,obj24) {
+						if(js_Boot.__instanceof(obj24[0],pony_geom_IWH)) {
+							f1 = (function(s78,obj25) {
 								return function() {
-									var p2 = obj24[0].toGlobal(new PIXI.Point());
-									obj24[0].filterArea = new PIXI.Rectangle(p2.x - s67[0],p2.y - s67[0],obj24[0].width + s67[0] * 2,obj24[0].height + s67[0] * 2);
-									var size = (js_Boot.__cast(obj24[0] , pony_geom_IWH)).get_size();
-									obj24[0].filterArea.width = size.x + s67[0] * 2;
-									obj24[0].filterArea.height = size.y + s67[0] * 2;
+									var p2 = obj25[0].toGlobal(new PIXI.Point());
+									obj25[0].filterArea = new PIXI.Rectangle(p2.x - s78[0],p2.y - s78[0],obj25[0].width + s78[0] * 2,obj25[0].height + s78[0] * 2);
+									var size = (js_Boot.__cast(obj25[0] , pony_geom_IWH)).get_size();
+									obj25[0].filterArea.width = size.x + s78[0] * 2;
+									obj25[0].filterArea.height = size.y + s78[0] * 2;
 								};
-							})(s66,obj23);
+							})(s77,obj24);
 						} else {
-							f1 = (function(s68,obj25) {
+							f1 = (function(s79,obj26) {
 								return function() {
-									var p3 = obj25[0].toGlobal(new PIXI.Point());
-									obj25[0].filterArea = new PIXI.Rectangle(p3.x - s68[0],p3.y - s68[0],obj25[0].width + s68[0] * 2,obj25[0].height + s68[0] * 2);
+									var p3 = obj26[0].toGlobal(new PIXI.Point());
+									obj26[0].filterArea = new PIXI.Rectangle(p3.x - s79[0],p3.y - s79[0],obj26[0].width + s79[0] * 2,obj26[0].height + s79[0] * 2);
 								};
-							})(s66,obj23);
+							})(s77,obj24);
 						}
-						var s69 = attrs.dyn;
-						if(s69 != null && StringTools.trim(s69.toLowerCase()) == "true") {
+						var s80 = attrs.dyn;
+						if(s80 != null && StringTools.trim(s80.toLowerCase()) == "true") {
 							var this26;
 							if(pony_time_DeltaTime.eFixedUpdate == null) {
 								var this110 = new pony_Priority(null,false);
@@ -998,7 +1054,7 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 							this26.add({ once : false, listener : pony_events_Listener1Type.LFunction0(f1)});
 						} else {
 							pony_time_DeltaTime.skipUpdate(f1);
-							pony_pixi_App.main.eResize.add({ once : false, listener : pony_events_Listener1Type.LFunction0(f1)});
+							this.app.eResize.add({ once : false, listener : pony_events_Listener1Type.LFunction0(f1)});
 						}
 					}
 				}
@@ -1008,29 +1064,29 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 			}
 		}
 		if(attrs.x != null) {
-			var s70 = attrs.x;
-			obj.x = s70 == null ? 0 : parseFloat(s70) * this.SCALE;
+			var s81 = attrs.x;
+			obj.x = s81 == null ? 0 : parseFloat(s81) * this.SCALE;
 		}
 		if(attrs.y != null) {
-			var s71 = attrs.y;
-			obj.y = s71 == null ? 0 : parseFloat(s71) * this.SCALE;
+			var s82 = attrs.y;
+			obj.y = s82 == null ? 0 : parseFloat(s82) * this.SCALE;
 		}
-		var s72 = attrs.flipx;
-		if(s72 != null && StringTools.trim(s72.toLowerCase()) == "true") {
+		var s83 = attrs.flipx;
+		if(s83 != null && StringTools.trim(s83.toLowerCase()) == "true") {
 			var o3 = obj;
 			o3.scale.x = -o3.scale.x;
 			var o4 = obj;
 			o4.x += o4.width;
 		}
-		var s73 = attrs.flipy;
-		if(s73 != null && StringTools.trim(s73.toLowerCase()) == "true") {
+		var s84 = attrs.flipy;
+		if(s84 != null && StringTools.trim(s84.toLowerCase()) == "true") {
 			var o5 = obj;
 			o5.scale.y = -o5.scale.y;
 			var o6 = obj;
 			o6.y += o6.height;
 		}
-		var s74 = attrs.visible;
-		if(s74 != null && StringTools.trim(s74.toLowerCase()) != "true") {
+		var s85 = attrs.visible;
+		if(s85 != null && StringTools.trim(s85.toLowerCase()) != "true") {
 			obj.visible = false;
 		}
 		return obj;
@@ -1047,9 +1103,12 @@ pony_ui_xml_PixiXmlUi.prototype = $extend(PIXI.Sprite.prototype,{
 	,_createUI: function() {
 		throw new js__$Boot_HaxeError("not implemented");
 	}
-	,createUI: function(scale) {
+	,createUI: function(app,scale) {
 		if(scale == null) {
 			scale = 1;
+		}
+		if(this.app == null) {
+			this.app = app == null ? pony_pixi_App.main : app;
 		}
 		this.SCALE = scale;
 		this.addChild(this._createUI());
@@ -1095,12 +1154,12 @@ UI.__name__ = true;
 UI.__super__ = pony_ui_xml_PixiXmlUi;
 UI.prototype = $extend(pony_ui_xml_PixiXmlUi.prototype,{
 	init: function() {
-		this.createUI(1);
+		this.createUI(null,1);
 	}
 	,_createUI: function() {
 		this.createFilters({ });
 		var tmp = this.createUIElement("rect",{ h : "300", w : "300", round : "15", color : "#333033", y : "200", x : "200"},[]);
-		var tmp1 = this.createUIElement("video",{ h : "280", src : "https://github.com/mediaelement/mediaelement-files/blob/master/big_buck_bunny.mp4?raw=true", w : "280", y : "210", x : "210"},[]);
+		var tmp1 = this.createUIElement("video",{ h : "280", src : "big_buck_bunny.mp4", w : "280", y : "210", x : "210"},[]);
 		return this.createUIElement("free",{ },[tmp,tmp1]);
 	}
 	,__class__: UI
@@ -1694,33 +1753,6 @@ pony_ISA.X64.__enum__ = pony_ISA;
 pony_ISA.Unknown = ["Unknown",2];
 pony_ISA.Unknown.toString = $estr;
 pony_ISA.Unknown.__enum__ = pony_ISA;
-var pony_JsTools = function() { };
-pony_JsTools.__name__ = true;
-pony_JsTools.closeFS = function() {
-	if(document.cancelFullScreen) {
-		document.cancelFullScreen();
-	} else if(document.mozCancelFullScreen) {
-		document.mozCancelFullScreen();
-	} else if(document.webkitCancelFullScreen) {
-		document.webkitCancelFullScreen();
-	} else if(document.msCancelFullScreen) {
-		document.msCancelFullScreen();
-	}
-};
-pony_JsTools.fse = function(e) {
-	if($bind(e,e.requestFullscreen)) {
-		e.requestFullscreen();
-	} else if(e.mozRequestFullScreen) {
-		e.mozRequestFullScreen();
-	} else if(e.webkitRequestFullscreen) {
-		e.webkitRequestFullscreen();
-	} else if(e.msRequestFullscreen) {
-		e.msRequestFullscreen();
-	}
-};
-var pony_OrState = { __ename__ : true, __constructs__ : ["A","B"] };
-pony_OrState.A = function(v) { var $x = ["A",0,v]; $x.__enum__ = pony_OrState; $x.toString = $estr; return $x; };
-pony_OrState.B = function(v) { var $x = ["B",1,v]; $x.__enum__ = pony_OrState; $x.toString = $estr; return $x; };
 var pony_Priority = function(data,$double) {
 	if($double == null) {
 		$double = false;
@@ -1928,202 +1960,6 @@ pony_Priority.prototype = {
 		this.eLost = null;
 	}
 	,__class__: pony_Priority
-};
-var pony__$Tasks_Tasks_$Impl_$ = {};
-pony__$Tasks_Tasks_$Impl_$.__name__ = true;
-pony__$Tasks_Tasks_$Impl_$.add = function(this1) {
-	var _g = this1;
-	_g.a = _g.a + 1;
-};
-pony__$Tasks_Tasks_$Impl_$.end = function(this1) {
-	var _g = this1;
-	if((_g.a = _g.a - 1) == 0) {
-		this1.b();
-	}
-};
-var pony_ArrayTools = function() { };
-pony_ArrayTools.__name__ = true;
-pony_ArrayTools.pair = function(a,b) {
-	var itA = $iterator(a)();
-	var itB = $iterator(b)();
-	return { hasNext : function() {
-		if(itA.hasNext()) {
-			return itB.hasNext();
-		} else {
-			return false;
-		}
-	}, next : function() {
-		var this1 = { a : itA.next(), b : itB.next()};
-		return this1;
-	}};
-};
-pony_ArrayTools.fIndexOf = function(a,f) {
-	var i = 0;
-	var _g = 0;
-	while(_g < a.length) {
-		var e = a[_g];
-		++_g;
-		if(f(e)) {
-			return i;
-		}
-		++i;
-	}
-	return -1;
-};
-var pony_FloatTools = function() { };
-pony_FloatTools.__name__ = true;
-pony_FloatTools._toFixed = function(v,n,begin,d,beginS,endS) {
-	if(endS == null) {
-		endS = "0";
-	}
-	if(beginS == null) {
-		beginS = "0";
-	}
-	if(d == null) {
-		d = ".";
-	}
-	if(begin == null) {
-		begin = 0;
-	}
-	if(begin != 0) {
-		var s = pony_FloatTools._toFixed(v,n,0,d,beginS,endS);
-		var a = s.split(d);
-		var d1 = begin - a[0].length;
-		return pony_text_TextTools.repeat(beginS,d1) + s;
-	}
-	if(n == 0) {
-		return Std.string(v | 0);
-	}
-	var p = Math.pow(10,n);
-	v = Math.floor(v * p) / p;
-	var s1 = v == null ? "null" : "" + v;
-	var a1 = s1.split(".");
-	if(a1.length <= 1) {
-		return s1 + d + pony_text_TextTools.repeat(endS,n);
-	} else {
-		return a1[0] + d + a1[1] + pony_text_TextTools.repeat(endS,n - a1[1].length);
-	}
-};
-var pony_Tumbler = function(enabled) {
-	if(enabled == null) {
-		enabled = true;
-	}
-	this.enabled = true;
-	if(this.eChangeEnabled == null || enabled != this.enabled) {
-		var prev = this.enabled;
-		pony_events__$Event2_Event2_$Impl_$.dispatch(this.eChangeEnabled,this.enabled = enabled,prev,true);
-	}
-	var this1;
-	if(this.eChangeEnabled == null) {
-		var this2 = new pony_Priority(null,false);
-		this2.compare = pony_events__$Event2_Event2_$Impl_$.compare;
-		this1 = this.eChangeEnabled = this2;
-	} else {
-		this1 = this.eChangeEnabled;
-	}
-	var s = pony_events__$Signal2_Signal2_$Impl_$.sub1(this1,true);
-	var this3 = new pony_Priority(null,false);
-	this3.compare = pony_events__$Event0_Event0_$Impl_$.compare;
-	var ns = this3;
-	s.add({ once : false, listener : pony_events_Listener1Type.LEvent0(ns)});
-	this.onEnable = ns;
-	var this4;
-	if(this.eChangeEnabled == null) {
-		var this5 = new pony_Priority(null,false);
-		this5.compare = pony_events__$Event2_Event2_$Impl_$.compare;
-		this4 = this.eChangeEnabled = this5;
-	} else {
-		this4 = this.eChangeEnabled;
-	}
-	var s1 = pony_events__$Signal2_Signal2_$Impl_$.sub1(this4,false);
-	var this6 = new pony_Priority(null,false);
-	this6.compare = pony_events__$Event0_Event0_$Impl_$.compare;
-	var ns1 = this6;
-	s1.add({ once : false, listener : pony_events_Listener1Type.LEvent0(ns1)});
-	this.onDisable = ns1;
-};
-pony_Tumbler.__name__ = true;
-pony_Tumbler.__interfaces__ = [pony_magic_HasSignal];
-pony_Tumbler.prototype = {
-	enable: function() {
-		if(this.eChangeEnabled == null || true != this.enabled) {
-			var prev = this.enabled;
-			this.enabled = true;
-			pony_events__$Event2_Event2_$Impl_$.dispatch(this.eChangeEnabled,true,prev,true);
-		}
-	}
-	,disable: function() {
-		if(this.eChangeEnabled == null || false != this.enabled) {
-			var prev = this.enabled;
-			this.enabled = false;
-			pony_events__$Event2_Event2_$Impl_$.dispatch(this.eChangeEnabled,false,prev,true);
-		}
-	}
-	,destroySignals: function() {
-		if(this.eChangeEnabled != null) {
-			var this1 = this.eChangeEnabled;
-			if(this1 != null) {
-				this1.destroy();
-			}
-		}
-		this.eChangeEnabled = null;
-	}
-	,__class__: pony_Tumbler
-};
-var pony_TypedPool_$pony_$ui_$touch_$Touch = function() {
-	this.list = [];
-};
-pony_TypedPool_$pony_$ui_$touch_$Touch.__name__ = true;
-pony_TypedPool_$pony_$ui_$touch_$Touch.__interfaces__ = [pony_IPool];
-pony_TypedPool_$pony_$ui_$touch_$Touch.prototype = {
-	__class__: pony_TypedPool_$pony_$ui_$touch_$Touch
-};
-var pony_color__$UColor_UColor_$Impl_$ = {};
-pony_color__$UColor_UColor_$Impl_$.__name__ = true;
-pony_color__$UColor_UColor_$Impl_$.fromString = function(s) {
-	s = StringTools.trim(s);
-	var v;
-	if(HxOverrides.substr(s,0,1) == "#") {
-		v = Std.parseInt("0x" + HxOverrides.substr(s,1,null));
-	} else if(HxOverrides.substr(s,0,3) == "rgb") {
-		s = StringTools.ltrim(HxOverrides.substr(s,3,null));
-		if(StringTools.startsWith(s,"(") && StringTools.endsWith(s,")")) {
-			var d = HxOverrides.substr(s,1,s.length - 2).split(",").map(Std.parseInt);
-			if(d.length != 3) {
-				throw new js__$Boot_HaxeError("Color params error");
-			}
-			v = (d[0] << 16) + (d[1] << 8) + d[2];
-		} else {
-			throw new js__$Boot_HaxeError("Color syntax error");
-		}
-	} else if(HxOverrides.substr(s,0,4) == "argb") {
-		s = StringTools.ltrim(HxOverrides.substr(s,4,null));
-		if(StringTools.startsWith(s,"(") && StringTools.endsWith(s,")")) {
-			var d1 = HxOverrides.substr(s,1,s.length - 2).split(",").map(Std.parseInt);
-			if(d1.length != 4) {
-				throw new js__$Boot_HaxeError("Color params error");
-			}
-			v = (d1[0] << 24) + (d1[1] << 16) + (d1[2] << 8) + d1[3];
-		} else {
-			throw new js__$Boot_HaxeError("Color syntax error");
-		}
-	} else {
-		switch(s) {
-		case "blue":
-			v = 255;
-			break;
-		case "green":
-			v = 65280;
-			break;
-		case "red":
-			v = 16711680;
-			break;
-		default:
-			throw new js__$Boot_HaxeError("Unknown color");
-		}
-	}
-	var this1 = v;
-	return this1;
 };
 var pony_events__$Event0_Event0_$Impl_$ = {};
 pony_events__$Event0_Event0_$Impl_$.__name__ = true;
@@ -2625,6 +2461,237 @@ pony_events_Listener0Type.LFunction0 = function(f) { var $x = ["LFunction0",0,f]
 pony_events_Listener0Type.LEvent0 = function(s,safe) { var $x = ["LEvent0",1,s,safe]; $x.__enum__ = pony_events_Listener0Type; $x.toString = $estr; return $x; };
 pony_events_Listener0Type.LBind1 = function(s,v) { var $x = ["LBind1",2,s,v]; $x.__enum__ = pony_events_Listener0Type; $x.toString = $estr; return $x; };
 pony_events_Listener0Type.LBind2 = function(s,v1,v2) { var $x = ["LBind2",3,s,v1,v2]; $x.__enum__ = pony_events_Listener0Type; $x.toString = $estr; return $x; };
+var pony_JsTools = function() { };
+pony_JsTools.__name__ = true;
+pony_JsTools.__interfaces__ = [pony_magic_HasSignal];
+pony_JsTools.regDocReady = function() {
+	var _e = pony_JsTools.eDocReady;
+	var tmp = function(safe) {
+		return pony_events__$Event0_Event0_$Impl_$.dispatch(_e,safe);
+	};
+	$global.docReady(tmp);
+};
+pony_JsTools.closeFS = function() {
+	if(document.cancelFullScreen) {
+		document.cancelFullScreen();
+	} else if(document.mozCancelFullScreen) {
+		document.mozCancelFullScreen();
+	} else if(document.webkitCancelFullScreen) {
+		document.webkitCancelFullScreen();
+	} else if(document.msCancelFullScreen) {
+		document.msCancelFullScreen();
+	}
+};
+pony_JsTools.fse = function(e) {
+	if($bind(e,e.requestFullscreen)) {
+		e.requestFullscreen();
+	} else if(e.mozRequestFullScreen) {
+		e.mozRequestFullScreen();
+	} else if(e.webkitRequestFullscreen) {
+		e.webkitRequestFullscreen();
+	} else if(e.msRequestFullscreen) {
+		e.msRequestFullscreen();
+	}
+};
+var pony_OrState = { __ename__ : true, __constructs__ : ["A","B"] };
+pony_OrState.A = function(v) { var $x = ["A",0,v]; $x.__enum__ = pony_OrState; $x.toString = $estr; return $x; };
+pony_OrState.B = function(v) { var $x = ["B",1,v]; $x.__enum__ = pony_OrState; $x.toString = $estr; return $x; };
+var pony__$Tasks_Tasks_$Impl_$ = {};
+pony__$Tasks_Tasks_$Impl_$.__name__ = true;
+pony__$Tasks_Tasks_$Impl_$.add = function(this1) {
+	var _g = this1;
+	_g.a = _g.a + 1;
+};
+pony__$Tasks_Tasks_$Impl_$.end = function(this1) {
+	var _g = this1;
+	if((_g.a = _g.a - 1) == 0) {
+		this1.b();
+	}
+};
+var pony_ArrayTools = function() { };
+pony_ArrayTools.__name__ = true;
+pony_ArrayTools.pair = function(a,b) {
+	var itA = $iterator(a)();
+	var itB = $iterator(b)();
+	return { hasNext : function() {
+		if(itA.hasNext()) {
+			return itB.hasNext();
+		} else {
+			return false;
+		}
+	}, next : function() {
+		var this1 = { a : itA.next(), b : itB.next()};
+		return this1;
+	}};
+};
+pony_ArrayTools.fIndexOf = function(a,f) {
+	var i = 0;
+	var _g = 0;
+	while(_g < a.length) {
+		var e = a[_g];
+		++_g;
+		if(f(e)) {
+			return i;
+		}
+		++i;
+	}
+	return -1;
+};
+var pony_FloatTools = function() { };
+pony_FloatTools.__name__ = true;
+pony_FloatTools._toFixed = function(v,n,begin,d,beginS,endS) {
+	if(endS == null) {
+		endS = "0";
+	}
+	if(beginS == null) {
+		beginS = "0";
+	}
+	if(d == null) {
+		d = ".";
+	}
+	if(begin == null) {
+		begin = 0;
+	}
+	if(begin != 0) {
+		var s = pony_FloatTools._toFixed(v,n,0,d,beginS,endS);
+		var a = s.split(d);
+		var d1 = begin - a[0].length;
+		return pony_text_TextTools.repeat(beginS,d1) + s;
+	}
+	if(n == 0) {
+		return Std.string(v | 0);
+	}
+	var p = Math.pow(10,n);
+	v = Math.floor(v * p) / p;
+	var s1 = v == null ? "null" : "" + v;
+	var a1 = s1.split(".");
+	if(a1.length <= 1) {
+		return s1 + d + pony_text_TextTools.repeat(endS,n);
+	} else {
+		return a1[0] + d + a1[1] + pony_text_TextTools.repeat(endS,n - a1[1].length);
+	}
+};
+var pony_Tumbler = function(enabled) {
+	if(enabled == null) {
+		enabled = true;
+	}
+	this.enabled = true;
+	if(this.eChangeEnabled == null || enabled != this.enabled) {
+		var prev = this.enabled;
+		pony_events__$Event2_Event2_$Impl_$.dispatch(this.eChangeEnabled,this.enabled = enabled,prev,true);
+	}
+	var this1;
+	if(this.eChangeEnabled == null) {
+		var this2 = new pony_Priority(null,false);
+		this2.compare = pony_events__$Event2_Event2_$Impl_$.compare;
+		this1 = this.eChangeEnabled = this2;
+	} else {
+		this1 = this.eChangeEnabled;
+	}
+	var s = pony_events__$Signal2_Signal2_$Impl_$.sub1(this1,true);
+	var this3 = new pony_Priority(null,false);
+	this3.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+	var ns = this3;
+	s.add({ once : false, listener : pony_events_Listener1Type.LEvent0(ns)});
+	this.onEnable = ns;
+	var this4;
+	if(this.eChangeEnabled == null) {
+		var this5 = new pony_Priority(null,false);
+		this5.compare = pony_events__$Event2_Event2_$Impl_$.compare;
+		this4 = this.eChangeEnabled = this5;
+	} else {
+		this4 = this.eChangeEnabled;
+	}
+	var s1 = pony_events__$Signal2_Signal2_$Impl_$.sub1(this4,false);
+	var this6 = new pony_Priority(null,false);
+	this6.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+	var ns1 = this6;
+	s1.add({ once : false, listener : pony_events_Listener1Type.LEvent0(ns1)});
+	this.onDisable = ns1;
+};
+pony_Tumbler.__name__ = true;
+pony_Tumbler.__interfaces__ = [pony_magic_HasSignal];
+pony_Tumbler.prototype = {
+	enable: function() {
+		if(this.eChangeEnabled == null || true != this.enabled) {
+			var prev = this.enabled;
+			this.enabled = true;
+			pony_events__$Event2_Event2_$Impl_$.dispatch(this.eChangeEnabled,true,prev,true);
+		}
+	}
+	,disable: function() {
+		if(this.eChangeEnabled == null || false != this.enabled) {
+			var prev = this.enabled;
+			this.enabled = false;
+			pony_events__$Event2_Event2_$Impl_$.dispatch(this.eChangeEnabled,false,prev,true);
+		}
+	}
+	,destroySignals: function() {
+		if(this.eChangeEnabled != null) {
+			var this1 = this.eChangeEnabled;
+			if(this1 != null) {
+				this1.destroy();
+			}
+		}
+		this.eChangeEnabled = null;
+	}
+	,__class__: pony_Tumbler
+};
+var pony_TypedPool_$pony_$ui_$touch_$Touch = function() {
+	this.list = [];
+};
+pony_TypedPool_$pony_$ui_$touch_$Touch.__name__ = true;
+pony_TypedPool_$pony_$ui_$touch_$Touch.__interfaces__ = [pony_IPool];
+pony_TypedPool_$pony_$ui_$touch_$Touch.prototype = {
+	__class__: pony_TypedPool_$pony_$ui_$touch_$Touch
+};
+var pony_color__$UColor_UColor_$Impl_$ = {};
+pony_color__$UColor_UColor_$Impl_$.__name__ = true;
+pony_color__$UColor_UColor_$Impl_$.fromString = function(s) {
+	s = StringTools.trim(s);
+	var v;
+	if(HxOverrides.substr(s,0,1) == "#") {
+		v = Std.parseInt("0x" + HxOverrides.substr(s,1,null));
+	} else if(HxOverrides.substr(s,0,3) == "rgb") {
+		s = StringTools.ltrim(HxOverrides.substr(s,3,null));
+		if(StringTools.startsWith(s,"(") && StringTools.endsWith(s,")")) {
+			var d = HxOverrides.substr(s,1,s.length - 2).split(",").map(Std.parseInt);
+			if(d.length != 3) {
+				throw new js__$Boot_HaxeError("Color params error");
+			}
+			v = (d[0] << 16) + (d[1] << 8) + d[2];
+		} else {
+			throw new js__$Boot_HaxeError("Color syntax error");
+		}
+	} else if(HxOverrides.substr(s,0,4) == "argb") {
+		s = StringTools.ltrim(HxOverrides.substr(s,4,null));
+		if(StringTools.startsWith(s,"(") && StringTools.endsWith(s,")")) {
+			var d1 = HxOverrides.substr(s,1,s.length - 2).split(",").map(Std.parseInt);
+			if(d1.length != 4) {
+				throw new js__$Boot_HaxeError("Color params error");
+			}
+			v = (d1[0] << 24) + (d1[1] << 16) + (d1[2] << 8) + d1[3];
+		} else {
+			throw new js__$Boot_HaxeError("Color syntax error");
+		}
+	} else {
+		switch(s) {
+		case "blue":
+			v = 255;
+			break;
+		case "green":
+			v = 65280;
+			break;
+		case "red":
+			v = 16711680;
+			break;
+		default:
+			throw new js__$Boot_HaxeError("Unknown color");
+		}
+	}
+	var this1 = v;
+	return this1;
+};
 var pony_events_Listener1Type = { __ename__ : true, __constructs__ : ["LFunction0","LFunction1","LEvent0","LEvent1","LSub","LNot","LBind1"] };
 pony_events_Listener1Type.LFunction0 = function(f) { var $x = ["LFunction0",0,f]; $x.__enum__ = pony_events_Listener1Type; $x.toString = $estr; return $x; };
 pony_events_Listener1Type.LFunction1 = function(f) { var $x = ["LFunction1",1,f]; $x.__enum__ = pony_events_Listener1Type; $x.toString = $estr; return $x; };
@@ -3373,36 +3440,41 @@ pony_pixi_FastMovieClip.prototype = {
 	,__class__: pony_pixi_FastMovieClip
 };
 var pony_pixi_HtmlContainerBase = function(targetRect,app,targetStyle) {
+	this.lastRect = null;
+	var this1 = { x : .0, y : .0};
+	this.targetPos = this1;
 	this.set_targetRect(targetRect);
 	if(app == null) {
 		app = pony_pixi_App.main;
 	}
 	this.app = app;
 	this.set_targetStyle(targetStyle);
+	this.set_targetPos(this.targetPos);
 };
 pony_pixi_HtmlContainerBase.__name__ = true;
 pony_pixi_HtmlContainerBase.prototype = {
 	resizeHandler: function(scale) {
-		var rect = this.app.parentDom.getBoundingClientRect();
-		var nx = rect.x + window.scrollX + scale * (this.targetRect.x + this.app.container.x / this.app.container.width);
-		var ny = rect.y + window.scrollY + scale * (this.targetRect.y + this.app.container.y / this.app.container.height);
-		var bw = scale * this.targetRect.width;
-		var bh = scale * this.targetRect.height;
-		this.resize(nx,ny,bw,bh);
+		this.lastRect = { x : scale * (this.targetRect.x + this.targetPos.x + this.app.container.x / this.app.container.width), y : scale * (this.targetRect.y + this.targetPos.y + this.app.container.y / this.app.container.height), width : scale * this.targetRect.width, height : scale * this.targetRect.height};
+		this.lastRect.x += this.lastRect.width;
+		this.lastRect.y += this.lastRect.height;
+		this.resize();
 	}
-	,resize: function(x,y,w,h) {
-		this.targetStyle.top = y + "px";
-		this.targetStyle.left = x + "px";
-		this.targetStyle.width = w + "px";
-		this.targetStyle.height = h + "px";
+	,resize: function() {
+		this.targetStyle.bottom = this.app.parentDom.clientHeight - this.lastRect.y + "px";
+		this.targetStyle.right = this.app.parentDom.clientWidth - this.lastRect.x + "px";
+		this.targetStyle.width = this.lastRect.width + "px";
+		this.targetStyle.height = this.lastRect.height + "px";
 	}
 	,set_targetStyle: function(s) {
 		this.targetStyle = s;
 		if(s == null) {
 			this.app.eResize.remove({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(this,this.resizeHandler))});
+			var this1 = this.app.eFrequentResize;
+			this1.remove({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.resize))});
 		} else {
 			s.position = "absolute";
 			this.app.eResize.add({ once : false, listener : pony_events_Listener1Type.LFunction1($bind(this,this.resizeHandler))});
+			this.app.eFrequentResize.add({ once : false, listener : pony_events_Listener0Type.LFunction0($bind(this,this.resize))});
 			this.resizeHandler(this.app.scale);
 		}
 		return this.targetStyle;
@@ -3413,6 +3485,13 @@ pony_pixi_HtmlContainerBase.prototype = {
 			if(this.targetStyle != null) {
 				this.resizeHandler(this.app.scale);
 			}
+		}
+		return v;
+	}
+	,set_targetPos: function(v) {
+		if(v.x != this.targetPos.x || v.y != this.targetPos.y) {
+			this.targetPos = v;
+			this.resizeHandler(this.app.scale);
 		}
 		return v;
 	}
@@ -3439,6 +3518,14 @@ pony_pixi_PixiAssets.cImage = function(asset,useSpriteSheet) {
 		return PIXI.Sprite.fromFrame(asset);
 	} else {
 		return PIXI.Sprite.fromImage(pony_ui_AssetManager.baseUrl + StringTools.replace(asset,"{local}",pony_ui_AssetManager.local));
+	}
+};
+pony_pixi_PixiAssets.text = function(asset) {
+	var _this = pony_pixi_PixiAssets.texts;
+	if(__map_reserved[asset] != null) {
+		return _this.getReserved(asset);
+	} else {
+		return _this.h[asset];
 	}
 };
 var pony_pixi_PixiExtends = function() { };
@@ -4166,27 +4253,43 @@ pony_pixi_ui_FSButtonCore.prototype = {
 };
 var pony_pixi_ui_HtmlContainer = function(targetRect,app) {
 	PIXI.Sprite.call(this);
-	this.targetRect = targetRect;
-	var g = new PIXI.Graphics();
-	g.beginFill(0);
-	g.drawRect(0,0,targetRect.width,targetRect.height);
-	this.addChild(g);
+	var this1 = { x : targetRect.width, y : targetRect.height};
+	this._size = this1;
 	this.htmlContainer = new pony_pixi_HtmlContainerBase(targetRect,app);
-	var this1;
+	var this2;
 	if(pony_time_DeltaTime.eFixedUpdate == null) {
 		var this11 = new pony_Priority(null,false);
 		this11.compare = pony_events__$Event1_Event1_$Impl_$.compare;
-		this1 = pony_time_DeltaTime.eFixedUpdate = this11;
+		this2 = pony_time_DeltaTime.eFixedUpdate = this11;
 	} else {
-		this1 = pony_time_DeltaTime.eFixedUpdate;
+		this2 = pony_time_DeltaTime.eFixedUpdate;
 	}
-	this1.add({ once : false, listener : pony_events_Listener1Type.LFunction0($bind(this,this.rectUpdate))});
+	var listener = { once : false, listener : pony_events_Listener1Type.LFunction0($bind(this,this.posUpdate))};
+	listener.once = true;
+	this2.add(listener,0);
+	pony_time_DeltaTime.skipUpdate($bind(this,this.posUpdate));
 };
 pony_pixi_ui_HtmlContainer.__name__ = true;
+pony_pixi_ui_HtmlContainer.__interfaces__ = [pony_geom_IWH];
 pony_pixi_ui_HtmlContainer.__super__ = PIXI.Sprite;
 pony_pixi_ui_HtmlContainer.prototype = $extend(PIXI.Sprite.prototype,{
-	rectUpdate: function() {
-		this.targetRect = { x : this.x, y : this.y, width : this.width, height : this.height};
+	wait: function(f) {
+		f();
+	}
+	,posUpdate: function() {
+		var gx = 0;
+		var gy = 0;
+		var p = this.parent;
+		while(p.parent.parent != null) {
+			gx += p.x;
+			gy += p.y;
+			p = p.parent;
+		}
+		var this1 = { x : gx, y : gy};
+		this.htmlContainer.set_targetPos(this1);
+	}
+	,destroyIWH: function() {
+		this.destroy();
 	}
 	,__class__: pony_pixi_ui_HtmlContainer
 });
@@ -4391,6 +4494,54 @@ pony_pixi_ui_ProgressBar.prototype = $extend(pony_pixi_ui_LabelBar.prototype,{
 		}
 	}
 	,__class__: pony_pixi_ui_ProgressBar
+});
+var pony_pixi_ui_RenderBox = function(w,h,app,canvas) {
+	this.app = app == null ? pony_pixi_App.main : app;
+	if(!canvas) {
+		this.renderTexture = PIXI.RenderTexture.create(w,h);
+	}
+	PIXI.Sprite.call(this,this.renderTexture);
+	var this1 = { x : w, y : h};
+	this.container = new pony_pixi_ui_RenderContainer(this1);
+};
+pony_pixi_ui_RenderBox.__name__ = true;
+pony_pixi_ui_RenderBox.__interfaces__ = [pony_geom_IWH];
+pony_pixi_ui_RenderBox.__super__ = PIXI.Sprite;
+pony_pixi_ui_RenderBox.prototype = $extend(PIXI.Sprite.prototype,{
+	update: function() {
+		if(this.renderTexture != null) {
+			this.app.app.renderer.render(this.container,this.renderTexture,true);
+		} else {
+			var _renderer = new PIXI.CanvasRenderer(null,this.container._size.x,this.container._size.y);
+			_renderer.transparent = true;
+			_renderer.render(this.container);
+			this.texture = PIXI.Texture.fromCanvas(_renderer.view);
+		}
+	}
+	,wait: function(f) {
+		this.container.wait(f);
+	}
+	,destroyIWH: function() {
+		this.container.destroyIWH();
+		this.destroy();
+	}
+	,__class__: pony_pixi_ui_RenderBox
+});
+var pony_pixi_ui_RenderContainer = function(size) {
+	PIXI.Sprite.call(this);
+	this._size = size;
+};
+pony_pixi_ui_RenderContainer.__name__ = true;
+pony_pixi_ui_RenderContainer.__interfaces__ = [pony_geom_IWH];
+pony_pixi_ui_RenderContainer.__super__ = PIXI.Sprite;
+pony_pixi_ui_RenderContainer.prototype = $extend(PIXI.Sprite.prototype,{
+	wait: function(f) {
+		f();
+	}
+	,destroyIWH: function() {
+		this.destroy();
+	}
+	,__class__: pony_pixi_ui_RenderContainer
 });
 var pony_pixi_ui_RubberLayout = function(layoutWidth,layoutHeight,vert,border,padding,align) {
 	if(padding == null) {
@@ -8753,6 +8904,35 @@ Bool.__ename__ = ["Bool"];
 var Class = { __name__ : ["Class"]};
 var Enum = { };
 var __map_reserved = {};
+var _this;
+if(pony_JsTools.eDocReady == null) {
+	var this1 = new pony_Priority(null,false);
+	this1.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+	_this = pony_JsTools.eDocReady = this1;
+} else {
+	_this = pony_JsTools.eDocReady;
+}
+var _this1 = _this;
+var needOnLost = _this1.data.length != 0;
+_this1.hash = new haxe_ds_IntMap();
+_this1.data = [];
+_this1.counters = [0];
+_this1.addStack = [];
+if(needOnLost) {
+	pony_events__$Event0_Event0_$Impl_$.dispatch(_this1.eLost);
+}
+var _this2 = pony_JsTools.eDocReady;
+var this2;
+if(_this2.eTake == null) {
+	var this3 = new pony_Priority(null,false);
+	this3.compare = pony_events__$Event0_Event0_$Impl_$.compare;
+	this2 = _this2.eTake = this3;
+} else {
+	this2 = _this2.eTake;
+}
+var e = { once : false, listener : pony_events_Listener0Type.LFunction0(pony_JsTools.regDocReady)};
+e.once = true;
+this2.add(e,0);
 var f = new PIXI.filters.ColorMatrixFilter();
 f.kodachrome(true);
 pony_pixi_ui_AutoButton.LIGHT_FILTER = [f];
@@ -8841,6 +9021,7 @@ this4.compare = pony_events__$Event1_Event1_$Impl_$.compare;
 pony_ui_touch_pixi_Touch.eCancle = this4;
 js_Boot.__toStr = ({ }).toString;
 pony_pixi_FastMovieClip.storage = new haxe_ds_StringMap();
+pony_pixi_PixiAssets.texts = new haxe_ds_StringMap();
 pony_pixi_TextureCut.list = [];
 pony_text_TextTools.letters = (function($this) {
 	var $r;
